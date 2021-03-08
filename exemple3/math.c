@@ -216,7 +216,7 @@ parse_opt(int key, char *arg, struct parser_state *state)
  return 0;
 }
 const char about[] = "Simple program which use some function of 'math.h.'\"(gcc -lm)\"";
-static struct parser argp = { options, parse_opt, "math", NULL, \
+static struct parser argp = { options, parse_opt, "math [OPTION]", NULL, \
 				about, \
 				&program, NULL };
 void
