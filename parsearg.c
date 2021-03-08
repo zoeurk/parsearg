@@ -31,8 +31,8 @@ void parser_usage(struct parser *parser){
 	memset(&state, 0, sizeof(struct parser_state));
 	PARSER_STATE(parser, state);
 	if(parser->doc || parser->args_doc){
-		fprintf(state.out_stream, "Usage: ");
-		if(parser->doc)fprintf(state.out_stream,"%s", parser->doc);
+		fprintf(state.out_stream, "Usage: %s", parser->state->name);
+		if(parser->doc)fprintf(state.out_stream," %s", parser->doc);
 		if(parser->args_doc)fprintf(state.out_stream, " %s", parser->args_doc);
 		printf("\n");
 	}
@@ -156,9 +156,9 @@ void parser_short_usage(struct parser *parser){
 	}
 	for(i = 0, j = 0; options[i].longoption != 0; i++){
 		if((options[i].flags&OPTION_ARG_OPTIONAL) == 0 && options[i].args){
-			upper(&k, 4+strlen(options[i].args),l);
+			upper(&k, 6+strlen(options[i].args),l);
 			fprintf(state.out_stream,"[-%c %s] ",options[i].shortoption, options[i].args);
-			k += 4+strlen(options[i].args);
+			k += 6+strlen(options[i].args);
 		}
 	}
 	for(i = 0;options[i].longoption != 0; i++){

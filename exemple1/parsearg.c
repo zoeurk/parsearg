@@ -156,9 +156,9 @@ void parser_short_usage(struct parser *parser){
 	}
 	for(i = 0, j = 0; options[i].longoption != 0; i++){
 		if((options[i].flags&OPTION_ARG_OPTIONAL) == 0 && options[i].args){
-			upper(&k, 4+strlen(options[i].args),l);
+			upper(&k, 6+strlen(options[i].args),l);
 			fprintf(state.out_stream,"[-%c %s] ",options[i].shortoption, options[i].args);
-			k += 4+strlen(options[i].args);
+			k += 6+strlen(options[i].args);
 		}
 	}
 	for(i = 0;options[i].longoption != 0; i++){
