@@ -31,8 +31,8 @@ void parser_usage(struct parser *parser){
 	memset(&state, 0, sizeof(struct parser_state));
 	PARSER_STATE(parser, state);
 	if(parser->doc || parser->args_doc){
-		fprintf(state.out_stream, "Usage: ");
-		if(parser->doc)fprintf(state.out_stream,"%s", parser->doc);
+		fprintf(state.out_stream, "Usage: %s", parser->state->name);
+		if(parser->doc)fprintf(state.out_stream," %s", parser->doc);
 		if(parser->args_doc)fprintf(state.out_stream, " %s", parser->args_doc);
 		printf("\n");
 	}

@@ -220,7 +220,7 @@ void destroy(void *p,int *fdin,int *fdout)
 	if(*fdout)close(*fdout);
 }
 const char about[] ="Encode decodage depuis/vers  base 2, base 16, base32 et base64";
-static struct parser argp = {options,parse_opt, "basex", "[string|--]", about, &program, NULL};
+static struct parser argp = {options,parse_opt, NULL, "[string|--]", about, &program, NULL};
 int main(int argc, char **argv)
 {	
 	ssize_t i;
