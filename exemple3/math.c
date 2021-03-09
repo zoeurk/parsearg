@@ -33,6 +33,7 @@ options[] = {	{"double",'d', 0, NULL,"uliser une valeur double"},
 		{"newline",'N',0, NULL,"affiche le resultat avec un nouvelle ligne: \"result\\n\""},
 		/*{"help",'h', NULL, 0, "try -? or \"--usage\""},*/
 		{0}
+
  };
 typedef char bool;
 enum numbers{
@@ -207,7 +208,7 @@ parse_opt(int key, char *arg, struct parser_state *state)
 	    break;*/
   default:
   	fprintf(stderr,"Unanderstand parameter: \'%s\'.\nTry --help or --usage for more information.\n", arg);
-	parser_usage(state->parser);
+	/*parser_usage(NULL);*/
 	exit(EXIT_FAILURE);
   	/*fprintf(stderr,"==>\n");
   	    return ARGP_ERR_UNKNOWN;*/
