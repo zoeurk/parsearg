@@ -25,7 +25,10 @@ struct arguments{
 int main(int argc, char **argv){
 	struct arguments _args_;
 	parser_parse(&args, argc, argv/*, 0, 0*/, &_args_);
-	args.state = NULL;
+	args.state = calloc(1, sizeof(struct parser_state));
+	args.state->name = argv[0];
+	args.state->out_stream = stdout;
 	parser_usage(&args);
+	free(args.state);
 	return 0;
 }
