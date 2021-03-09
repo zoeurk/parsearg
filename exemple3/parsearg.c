@@ -177,9 +177,9 @@ void parser_short_usage(struct parser *parser){
 	}
 	for(i = 0, j = 0; options[i].longoption != 0; i++){
 		if((options[i].flags&OPTION_ARG_OPTIONAL) == 0 && options[i].args){
-			upper(&k, strlen(options[i].longoption) + strlen(options[i].args) +5, l);
+			upper(&k, strlen(options[i].longoption) + strlen(options[i].args) +6, l);
 			fprintf(state.out_stream,"[--%s=%s] ",options[i].longoption, options[i].args);
-			k += strlen(options[i].longoption) + strlen(options[i].args) +5;
+			k += strlen(options[i].longoption) + strlen(options[i].args) +6;
 		}
 	}
 	upper(&k, 9, l);
