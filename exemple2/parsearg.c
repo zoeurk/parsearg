@@ -42,7 +42,6 @@ void parser_usage(struct parser *parser){
 		if(parser->state->explain_colonne)
 			colonne[1] = parser->state->explain_colonne;
 	}
-	/*else if(parser->doc)printf("\n");*/
 	if(parser->about)
 		fprintf(state.out_stream,"%s\n\n", parser->about);
 	fprintf(state.out_stream,"OPTIONS:\n");
@@ -65,14 +64,20 @@ void parser_usage(struct parser *parser){
 			}
 		}
 		if(options[i].args){
+			if((options[i].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL)
+				printf("[");
 			fprintf(state.out_stream,"=");
-			for(k = k, j = 0, n = 0;j < strlen(options[i].args); j++, k++, n++){
+			for(k = k, j = 0, n = 0;j < strlen(options[i].args)+((options[i].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL); j++, k++, n++){
 				if(k < colonne[0])
 					fprintf(state.out_stream,"%c",options[i].args[j]);
 				else{
 					fprintf(state.out_stream,"\n %c", options[i].args[j]);
 					k = 0;
 				}
+			}
+			if((options[i].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL){
+				fprintf(state.out_stream,"]");
+				k++;
 			}
 			m = 0;
 		}else{
