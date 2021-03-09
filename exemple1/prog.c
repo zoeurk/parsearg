@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include "parsearg.h"
 struct info program = {"version:1.0","zoeurk@gmail.com"};
 struct parser_option options[] =	{
@@ -25,7 +26,10 @@ struct arguments{
 int main(int argc, char **argv){
 	struct arguments _args_;
 	parser_parse(&args, argc, argv/*, 0, 0*/, &_args_);
-	args.state = calloc(1, sizeof(struct parser_state));
+	if((args.state = calloc(1, sizeof(struct parser_state))) == NULL){
+		perror("calloc()");
+		exit(EXIT_FAILURE);
+	}
 	args.state->name = argv[0];
 	args.state->out_stream = stdout;
 	parser_usage(&args);
