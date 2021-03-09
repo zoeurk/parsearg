@@ -222,7 +222,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 	}else{
 		state.argv = parser->state->argv;
 		state.argc = parser->state->argc;
-		state.name = parser->state->argv[0];
+		state.name = parser->state->name;
 		state.input = parser->state->input;
 		state.err_stream = parser->state->err_stream;
 		state.out_stream = parser->state->out_stream;
