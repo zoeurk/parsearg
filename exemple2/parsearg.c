@@ -206,7 +206,7 @@ void parser_version(struct parser *parser){
 }
 void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int flags, unsigned int index,*/ void *input){
 	struct parser_state state;
-	struct parser p;
+	/*struct parser p;*/
 	int j, k;
 	char *temporary = NULL;
 	int ok = 0, end = 0;
@@ -219,13 +219,13 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 		state.input = input;
 		state.err_stream = stderr;
 		state.out_stream = stdout;
-	}else{
-		memcpy(&p, parser->state, sizeof(struct parser_state));
-	}
+	}/*else{*/
+		/*memcpy(&p, parser->state, sizeof(struct parser_state));*/
+	/*}*/
 	state.parser = parser;
 	parser->state = &state;
-	memcpy(&p,parser, sizeof(struct parser));
-	p.state = &state;
+	/*memcpy(&p,parser, sizeof(struct parser));
+	p.state = &state;*/
 	for(state.arg_num = 0, len = 0, temporary = NULL; ok = 0, state.arg_num < state.argc; state.arg_num++){
 		if(state.arg_num < argc)
 			state.next = state.arg_num+1;
