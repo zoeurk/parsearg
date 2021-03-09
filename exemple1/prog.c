@@ -25,6 +25,7 @@ struct arguments{
 int main(int argc, char **argv){
 	struct arguments _args_;
 	parser_parse(&args, argc, argv/*, 0, 0*/, &_args_);
-	/*parser_usage(&args);*/
+	args.state = NULL;
+	parser_usage(&args);
 	return 0;
 }
