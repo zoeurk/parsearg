@@ -31,7 +31,7 @@ void parser_usage(struct parser *parser){
 	memset(&state, 0, sizeof(struct parser_state));
 	PARSER_STATE(parser, state);
 	if(parser->doc || parser->args_doc){
-		fprintf(state.out_stream, "Usage: %s", parser->state->name);
+		if(parser->state && parser->state->name)fprintf(state.out_stream, "Usage: %s", parser->state->name);
 		if(parser->doc)fprintf(state.out_stream," %s", parser->doc);
 		if(parser->args_doc)fprintf(state.out_stream, " %s", parser->args_doc);
 		printf("\n");
@@ -223,6 +223,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 		memcpy(&p, parser->state, sizeof(struct parser_state));
 	}
 	state.parser = parser;
+	parser->state = &state;
 	memcpy(&p,parser, sizeof(struct parser));
 	p.state = &state;
 	for(state.arg_num = 0, len = 0, temporary = NULL; ok = 0, state.arg_num < state.argc; state.arg_num++){
@@ -275,15 +276,15 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 			}
 			if(ok == 0 && strncmp(state.argv[state.arg_num],"--",strlen(state.argv[state.arg_num])) != 0){
 				if(strcmp(state.argv[state.arg_num],"--help") == 0){
-					parser_usage(&p);
+					parser_usage(state.parser);
 					exit(EXIT_SUCCESS);
 				}
 				if(strcmp(state.argv[state.arg_num],"--usage") == 0){
-					parser_short_usage(&p);
+					parser_short_usage(state.parser);
 					exit(EXIT_SUCCESS);
 				}
 				if(parser->program && parser->program->program_version && strcmp(state.argv[state.arg_num],"--version") == 0){
-					parser_version(&p);
+					parser_version(state.parser);
 					exit(EXIT_SUCCESS);
 				}
 				ERROR(state.err_stream, "Unknow argument:\'%s\'\ntry --help or --usage for more information.\n", state.argv[state.arg_num]);
@@ -330,11 +331,11 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 					}
 					if(ok == 0){
 						if(state.argv[state.arg_num][j] == '?'){
-							parser_usage(parser);
+							parser_usage(state.parser);
 							exit(EXIT_SUCCESS);
 						}
 						if(parser->program && parser->program->program_version && state.argv[state.arg_num][j] == 'V'){
-							parser_version(parser);
+							parser_version(state.parser);
 							exit(EXIT_SUCCESS);
 						}
 						ERROR(state.err_stream, "Unknow argument:\'-%c\'\ntry --help or --usage for mor information.\n",

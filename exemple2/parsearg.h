@@ -60,7 +60,8 @@ struct parser{
 	struct parser_state *state;
 };
 /*struct parser args = { options, arguments, NULL, NULL};*/
+extern void parser_short_usage(struct parser *parser);
 extern void parser_usage(struct parser *parser);
-void parser_version(struct parser *parser);
+extern void parser_version(struct parser *parser);
 extern void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int flags, unsigned int index,*/ void *input);
 #endif
