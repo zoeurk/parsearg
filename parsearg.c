@@ -170,7 +170,7 @@ void parser_short_usage(struct parser *parser){
 	}
 	for(i = 0, j = 0; options[i].longoption != 0; i++){
 		if(options[i].flags&OPTION_ARG_OPTIONAL){
-			upper(&k, 8+strlen(options[i].longoption) + strlen(options[i].args), l);
+			upper(&k, 7+strlen(options[i].longoption) + strlen(options[i].args), l);
 			fprintf(state.out_stream,"[--%s[=%s]] ",options[i].longoption, options[i].args);
 			k += 7+strlen(options[i].longoption) + strlen(options[i].args);
 		}
