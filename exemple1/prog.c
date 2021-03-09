@@ -17,7 +17,7 @@ int arguments(int key, char *arg, struct parser_state *state){
 	else	printf("[+>ok:%c\n",key);
 	return 0;
 }
-struct parser args = {options, arguments, "prog", "salut", "Exemple de programme", &program, NULL};
+struct parser args = {options, arguments, "[OPTIONS]", "salut", "Exemple de programme", &program, NULL};
 struct arguments{
 	int i;
 	char buffer[1024];
