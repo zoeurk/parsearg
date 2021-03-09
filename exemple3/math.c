@@ -209,14 +209,7 @@ parse_opt(int key, char *arg, struct parser_state *state)
 	    break;*/
   default:
   	fprintf(stderr,"Unanderstand parameter: \'%s\'.\nTry --help or --usage for more information.\n", arg);
-	/*fprintf(stderr,"%s\n",state->name);*/
-	/*parser_short_usage(state->parser);*/
-	/*if(state->parser)
-		fprintf(stderr, "yes");*/
 	exit(EXIT_FAILURE);
-  	/*fprintf(stderr,"==>\n");
-  	    return ARGP_ERR_UNKNOWN;*/
-  /*default: parser_usage(state);*/
  }
  return 0;
 }
