@@ -195,6 +195,7 @@ parse_opt(int key, char *arg, struct parser_state *state)
   case 'N': args->type |= NEWLINE;
   	    break;
   case 'O': args->format = arg;
+  	/*parser_usage(state->parser);*/
   	    break;
   /*case ARGP_KEY_END:
   	    break;
@@ -208,7 +209,10 @@ parse_opt(int key, char *arg, struct parser_state *state)
 	    break;*/
   default:
   	fprintf(stderr,"Unanderstand parameter: \'%s\'.\nTry --help or --usage for more information.\n", arg);
-	/*parser_usage(NULL);*/
+	/*fprintf(stderr,"%s\n",state->name);*/
+	/*parser_short_usage(state->parser);*/
+	/*if(state->parser)
+		fprintf(stderr, "yes");*/
 	exit(EXIT_FAILURE);
   	/*fprintf(stderr,"==>\n");
   	    return ARGP_ERR_UNKNOWN;*/
