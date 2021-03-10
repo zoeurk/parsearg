@@ -10,7 +10,6 @@ struct parser_option options[] =	{
 					{ "retest", 'r', 0, NULL, "grr"},
 					{ "retest2", '2', OPTION_ALIAS, NULL, "grr2"},
 					{ "putaincesttroplong", 'L', 0, NULL, "c'est vraiment tres long"},
-					{ NULL, 'n', 0, NULL, "elle est null cette option :/"}, 
 					{0}
 				};
 void arguments(int key, char *arg, struct parser_state *state){
