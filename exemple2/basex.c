@@ -154,7 +154,7 @@ decode_basex(char *output,int outdef,char *alpha,char *padchar)
 	if(j)return i;
 	return 0;
 }
-static void
+void
 parse_opt
 	(int key, char *arg, struct parser_state *state)
 {	struct arguments *arguments = state->input;
