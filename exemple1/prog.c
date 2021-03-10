@@ -10,13 +10,14 @@ struct parser_option options[] =	{
 					{ "retest", 'r', 0, NULL, "grr"},
 					{ "retest2", '2', OPTION_ALIAS, NULL, "grr2"},
 					{ "putaincesttroplong", 'L', 0, NULL, "c'est vraiment tres long"},
+					{ NULL, 'n', 0, NULL, "elle est null cette option :/"}, 
 					{0}
 				};
-int arguments(int key, char *arg, struct parser_state *state){
+void arguments(int key, char *arg, struct parser_state *state){
 	if(arg)
 		printf("[=>ok:%c:%s\n",key, arg);
 	else	printf("[+>ok:%c\n",key);
-	return 0;
+	/*return 0;*/
 }
 struct parser args = {options, arguments, "[OPTIONS]", "salut", "Exemple de programme", &program, NULL};
 struct arguments{

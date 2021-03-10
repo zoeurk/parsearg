@@ -129,7 +129,7 @@ comput_two_numbers(struct arguments **args,char *option)
  }
  return 0;
 }
-int
+void
 parse_opt(int key, char *arg, struct parser_state *state)
 {
  struct arguments *args = state->input;
@@ -211,7 +211,7 @@ parse_opt(int key, char *arg, struct parser_state *state)
   	fprintf(stderr,"Unanderstand parameter: \'%s\'.\nTry --help or --usage for more information.\n", arg);
 	exit(EXIT_FAILURE);
  }
- return 0;
+ /*return 0;*/
 }
 const char about[] = "Simple program which use some function of 'math.h.'\"(gcc -lm)\"";
 static struct parser argp = { options, parse_opt, "OPTIONS", NULL, \

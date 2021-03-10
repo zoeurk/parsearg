@@ -154,7 +154,7 @@ decode_basex(char *output,int outdef,char *alpha,char *padchar)
 	if(j)return i;
 	return 0;
 }
-static int
+static void
 parse_opt
 	(int key, char *arg, struct parser_state *state)
 {	struct arguments *arguments = state->input;
@@ -201,11 +201,11 @@ parse_opt
 				arguments->buflen = strlen(arg);
 				if(arguments->buflen == 0)
 					exit(0);
-				return 0;
+				/*return 0;*/
 			}
 			break;
 	}
-	return 0;
+	/*return 0;*/
 }
 void end(int signum){
 	if(b->input)free(b->input);

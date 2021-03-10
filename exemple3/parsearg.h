@@ -52,7 +52,7 @@ struct parser_state{
 };
 struct parser{
 	struct parser_option *options;
-	int (*parse_opt)(int key,char *arg,struct parser_state *state);
+	void (*parse_opt)(int key,char *arg,struct parser_state *state);
 	const char *doc;
 	const char *args_doc;
 	const char *about;
