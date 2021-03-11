@@ -23,7 +23,7 @@ options[] = { 	{"infile",'i', 0, "FILE", "input file (- for stdin)"},
 		{"base", 'b',0, "BASE", "select base BIN,16,16min,32,32hex,64,64url"},
 		{"cwrap", 'w',0, "COLUMN_WRAP","ajuste la longueur des colonnes"},
 		{"lwrap", 'W',0, "LINE_WRAP","ajuste la longueur des lignes"},
-		{"ignore-gabage",'g', 0,NULL, "ignore les carcateres hors base"},
+		{"ignore-garbage",'g', 0,NULL, "ignore les carcateres hors base"},
 		{0}
 	};
 char *base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -154,7 +154,7 @@ decode_basex(char *output,int outdef,char *alpha,char *padchar)
 	if(j)return i;
 	return 0;
 }
-void
+static void
 parse_opt
 	(int key, char *arg, struct parser_state *state)
 {	struct arguments *arguments = state->input;
