@@ -25,9 +25,41 @@ void upper(int *len, int inc,int max){
 		*len = 0;
 	}
 }
+void defaults(FILE *out, int *colonne, char shortoption, char *longoption, char *explain){
+	int j, k, l;
+	if(shortoption)
+		fprintf(out, " -%c, --", shortoption);
+	else	fprintf(out, "     --");
+	for(j = 0, k = 7; j < strlen(longoption);j++, k++){
+		if(k < colonne[0]){
+			fprintf(out,"%c", longoption[j]);
+		}else{
+			fprintf(out,"\n %c", longoption[j]);
+			k = 0;
+		}
+	}
+	l = k-2;
+	for(j = 0, k = 0; j < colonne[0]-l; j++, k++){
+		fprintf(out," ");
+	}
+	for(j = 0, k = 0; j < strlen(explain);j++, k++){
+		if(k < colonne[1]){
+			fprintf(out,"%c", explain[j]);
+		}else{
+			fprintf(out, "\n");
+			for(l = 0; l < colonne[0]+2; l++)
+				fprintf(out, " ");
+			fprintf(out,"%c", explain[j]);
+			k = 0;
+		}
+	}
+}
 void parser_usage(struct parser *parser){
 	struct parser_state state;
 	int colonne[2] = {ARG_COLONNE,EXPLAIN_COLONNE}, i, j, k, l, m, n, c = 0, c_;
+	char shortoption[3] = {'?', 0, 'V'},
+		*option[3] = {"help", "usage", "version"},
+		*explain[3] = {"show this message", "show short help", "show version"};
 	memset(&state, 0, sizeof(struct parser_state));
 	PARSER_STATE(parser, state);
 	if(parser->doc || parser->args_doc){
@@ -54,8 +86,8 @@ void parser_usage(struct parser *parser){
 	}
 	c++;
 	for(i = 0; options[i].longoption != 0; i++){
-		fprintf(state.out_stream," -%c,--", options[i].shortoption);
-		for(j = 0, k = 6; j < c && j < strlen(options[i].longoption);j++, k++){
+		fprintf(state.out_stream," -%c, --", options[i].shortoption);
+		for(j = 0, k = 7; j < c && j < strlen(options[i].longoption);j++, k++){
 			if(k < colonne[0])
 				fprintf(state.out_stream,"%c", options[i].longoption[j]);
 			else{
@@ -64,9 +96,12 @@ void parser_usage(struct parser *parser){
 			}
 		}
 		if(options[i].args){
-			if((options[i].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL)
+			if((options[i].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL){
 				printf("[");
+				k++;
+			}
 			fprintf(state.out_stream,"=");
+			k++;
 			for(k = k, j = 0, n = 0;j < strlen(options[i].args)+((options[i].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL); j++, k++, n++){
 				if(k < colonne[0])
 					fprintf(state.out_stream,"%c",options[i].args[j]);
@@ -76,9 +111,10 @@ void parser_usage(struct parser *parser){
 				}
 			}
 			if((options[i].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL){
-				fprintf(state.out_stream,"]");
+				fprintf(state.out_stream,"] ");
 				k++;
 			}
+			printf(" ");
 			m = 0;
 		}else{
 			m = 1;
@@ -90,10 +126,10 @@ void parser_usage(struct parser *parser){
 			if(k < colonne[1])
 				fprintf(state.out_stream,"%c", options[i].explain[j]);
 			else{
-				for(j = j; options[i].explain[j] != ' '; j++)
+				for(j = j; j < strlen(options[i].explain) && options[i].explain[j] != ' '; j++)
 					fprintf(state.out_stream,"%c",options[i].explain[j]);
 				fprintf(state.out_stream,"\n");
-				for(l = 0; l < colonne[0]+2; l++)
+				for(l = 0; l < colonne[0]+1; l++)
 					fprintf(state.out_stream," ");
 				fprintf(state.out_stream,"%c", options[i].explain[j]);
 				k = 0;
@@ -101,26 +137,15 @@ void parser_usage(struct parser *parser){
 		}
 		fprintf(state.out_stream,"\n");
 	}
-	fprintf(state.out_stream," -?, --help");
-	for(j = 0; j < colonne[0]-9; j++){
-		fprintf(state.out_stream," ");
-	}
-	fprintf(state.out_stream,"show this message");
-	fprintf(state.out_stream,"\n     --usage");
-	for(j = 0; j < colonne[0]-10; j++){
-		fprintf(state.out_stream," ");
-	}
-	fprintf(state.out_stream,"show short help");
-	if(parser->program && parser->program->program_version){
-		fprintf(state.out_stream,"\n");
-		fprintf(state.out_stream," -V, --version");
-		for(j = 0; j < colonne[0]-12; j++){
-			fprintf(state.out_stream," ");
+	/*help, usage...*/
+	for(i = 0; i < 3;i++){
+		if(i != 2 || (i == 2 && parser->program && parser->program->program_version)){
+			defaults(state.out_stream, colonne, shortoption[i], option[i], explain[i]);
+			fprintf(state.out_stream,"\n");
 		}
-		fprintf(state.out_stream,"show version\n");
-	}else	fprintf(state.out_stream, "\n");
+	}
 	if(parser->program && parser->program->program_bug_address)
-		fprintf(state.out_stream, "Report bug to: %s\n", parser->program->program_bug_address);
+		fprintf(state.out_stream, "\nReport bug to: %s\n", parser->program->program_bug_address);
 }
 void parser_short_usage(struct parser *parser){
 	struct parser_state state;
