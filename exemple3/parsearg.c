@@ -215,11 +215,9 @@ void parser_short_usage(struct parser *parser){
 	upper(&k, 9, l);
 	fprintf(state.out_stream,"[--help] ");
 	k += 9;
-	if(parser->program && parser->program->program_version){
-		upper(&k, 10 ,l);
-		fprintf(state.out_stream,"[--usage] ");
-		k += 10;
-	}
+	upper(&k, 10 ,l);
+	fprintf(state.out_stream,"[--usage] ");
+	k += 10;
 	if(parser->program && parser->program->program_version){
 		upper(&k, 12, l);
 		fprintf(state.out_stream,"[--version] ");
