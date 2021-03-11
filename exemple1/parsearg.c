@@ -221,6 +221,10 @@ void parser_short_usage(struct parser *parser){
 	if(parser->program && parser->program->program_version){
 		upper(&k, 12, l);
 		fprintf(state.out_stream,"[--version] ");
+		k += 12;
+	}else{
+		upper(&k, 10, l);
+		k += 10;
 	}
 	if(parser->args_doc)
 		fprintf(state.out_stream, "%s\n", parser->args_doc);
