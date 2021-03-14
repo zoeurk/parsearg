@@ -56,7 +56,7 @@ void defaults(FILE *out, int *colonne, char shortoption, char *longoption, char 
 }
 void parser_usage(struct parser *parser){
 	struct parser_state state;
-	int colonne[2] = {ARG_COLONNE,EXPLAIN_COLONNE}, i, j, k, l, m, n, z = 0, c = 0, c_;
+	int colonne[2] = {ARG_COLONNE,EXPLAIN_COLONNE}, i, j, k, l, m, n, z = 0/*, c = 0, c_*/;
 	char shortoption[3] = {'?', 0, 'V'},
 		*option[3] = {"help", "usage", "version"},
 		*explain[3] = {"show this message", "show short help", "show version"};
@@ -77,20 +77,20 @@ void parser_usage(struct parser *parser){
 	if(parser->about)
 		fprintf(state.out_stream,"%s\n\n", parser->about);
 	fprintf(state.out_stream,"OPTIONS:\n");
-	for(i = 0; options[i].longoption != 0; i++){
+	/*for(i = 0; options[i].longoption != 0; i++){
 		if((c_ = strlen(options[i].longoption)+5) > c)
 		{	c = c_;
 			if(options[i].args)
 				c += strlen(options[i].args);
 		}
 	}
-	c++;
+	c++;*/
 	/*n = 0;*/
 	for(i = 0;z = 0, options[i].longoption != 0; i++){
 		if(options[i].shortoption != 0)
 			fprintf(state.out_stream," -%c, --", options[i].shortoption);
 		else	fprintf(state.out_stream,"    --");
-		for(j = 0, k = 7,z = 0; j < c && j < strlen(options[i].longoption);j++, k++){
+		for(j = 0, k = 7,z = 0; j < strlen(options[i].longoption);j++, k++){
 			if(k < colonne[0])
 				fprintf(state.out_stream,"%c", options[i].longoption[j]);
 			else{
@@ -120,9 +120,7 @@ void parser_usage(struct parser *parser){
 			}
 			printf(" ");
 			m = 0;
-		}else{
-			m = 1;
-		}
+		}else	m = 1;
 		if(k != 0)
 			for(k = k+z;k < colonne[0] + m +1; k++)
 				fprintf(state.out_stream," "); 
