@@ -305,7 +305,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 									parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);
 									state.arg_num++;
 								}else{	ERROR(state.err_stream,
-										"Argument required for \'%s\'\ntry --help or --usage for more information.\n",
+										"Argument required for \'%s\'\nTry --help or --usage for more information.\n",
 										state.argv[state.arg_num]);
 								}
 							}
@@ -327,7 +327,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 					parser_version(state.parser);
 					exit(EXIT_SUCCESS);
 				}
-				ERROR(state.err_stream, "Unknow argument:\'%s\'\ntry --help or --usage for more information.\n", state.argv[state.arg_num]);
+				ERROR(state.err_stream, "Unknow argument:\'%s\'\nTry --help or --usage for more information.\n", state.argv[state.arg_num]);
 			}
 		}else{	if(end == 1){
 				ok = 1;
@@ -360,7 +360,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 											j += strlen(&state.argv[state.arg_num][j+1]);
 										}else{
 											ERROR(state.err_stream,
-												"Missing argument for :\'-%c\'\ntry --help or --usage for more inforamtion.\n",
+												"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",
 												state.argv[state.arg_num][j]);
 										}
 									}
@@ -378,7 +378,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 							parser_version(state.parser);
 							exit(EXIT_SUCCESS);
 						}
-						ERROR(state.err_stream, "Unknow argument:\'-%c\'\ntry --help or --usage for mor information.\n",
+						ERROR(state.err_stream, "Unknow argument:\'-%c\'\nTry --help or --usage for mor information.\n",
 							state.argv[state.arg_num][j]);
 					}
 				}
