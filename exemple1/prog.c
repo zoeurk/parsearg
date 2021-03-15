@@ -25,11 +25,17 @@ struct arguments{
 	int i;
 	char buffer[1024];
 };
+void bye(void){
+	free(args.state);
+}
 int main(int argc, char **argv){
 	struct arguments _args_;
-	struct parser_state p;
+	atexit(bye);
 	memset(&p,0,sizeof(struct parser_state));
-	args.state = &p;
+	if((args.state = calloc(1,sizeof(struct parser_state))) == NULL){
+		perror("calloc()");
+		exit(EXIT_FAILURE);
+	}
 	args.state->argv = argv;
 	args.state->argc = argc;
 	args.state->name = argv[0];
