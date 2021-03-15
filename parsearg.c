@@ -89,7 +89,7 @@ void parser_usage(struct parser *parser){
 	for(i = 0;z = 0, options[i].longoption != 0; i++){
 		if(options[i].shortoption != 0)
 			fprintf(state.out_stream," -%c, --", options[i].shortoption);
-		else	fprintf(state.out_stream,"    --");
+		else	fprintf(state.out_stream,"     --");
 		for(j = 0, k = 7,z = 0; j < strlen(options[i].longoption);j++, k++){
 			if(k < colonne[0])
 				fprintf(state.out_stream,"%c", options[i].longoption[j]);
