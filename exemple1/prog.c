@@ -27,15 +27,16 @@ struct arguments{
 };
 int main(int argc, char **argv){
 	struct arguments _args_;
-	parser_parse(&args, argc, argv/*, 0, 0*/, &_args_);
-	if((args.state = calloc(1, sizeof(struct parser_state))) == NULL){
-		perror("calloc()");
-		exit(EXIT_FAILURE);
-	}
+	struct parser_state p;
+	memset(&p,0,sizeof(struct parser_state));
+	args.state = &p;
+	args.state->argv = argv;
+	args.state->argc = argc;
 	args.state->name = argv[0];
 	args.state->out_stream = stdout;
-	args.state->arg_colonne = 40;
+	args.state->err_stream = stderr;
+	args.state->arg_colonne = 35;
+	parser_parse(&args, argc, argv, &_args_);
 	parser_usage(&args);
-	free(args.state);
 	return 0;
 }

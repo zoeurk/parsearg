@@ -67,7 +67,10 @@ void parser_usage(struct parser *parser){
 		if(parser->doc)fprintf(state.out_stream," %s", parser->doc);
 		if(parser->args_doc)fprintf(state.out_stream, " %s", parser->args_doc);
 		printf("\n");
+		
 	}
+	/*fprintf(stderr,"==========\n");
+	exit(0);*/
 	if(parser->state){
 		if(parser->state->arg_colonne)
 			colonne[0] = parser->state->arg_colonne;
@@ -255,6 +258,8 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 		state.input = input;
 		state.err_stream = stderr;
 		state.out_stream = stdout;
+		state.parser = parser;
+		parser->state = &state;
 	}else{
 		state.argv = parser->state->argv;
 		state.argc = parser->state->argc;
@@ -262,10 +267,8 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 		state.input = parser->state->input;
 		state.err_stream = parser->state->err_stream;
 		state.out_stream = parser->state->out_stream;
-
+		state.parser = parser;
 	}
-	state.parser = parser;
-	parser->state = &state;
 	/*memcpy(&p,parser, sizeof(struct parser));
 	p.state = &state;*/
 	for(state.arg_num = 0, len = 0, temporary = NULL; ok = 0, state.arg_num < state.argc; state.arg_num++){
