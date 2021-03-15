@@ -87,8 +87,10 @@ void parser_usage(struct parser *parser){
 	c++;*/
 	/*n = 0;*/
 	for(i = 0;z = 0, options[i].longoption != 0; i++){
-		if(options[i].shortoption != 0)
-			fprintf(state.out_stream," -%c, --", options[i].shortoption);
+		if((options[i].shortoption >47 && options[i].shortoption < 58) || 
+			(options[i].shortoption >64 && options[i].shortoption < 91) ||
+			(options[i].shortoption >96 && options[i].shortoption < 124)
+		)	fprintf(state.out_stream," -%c, --", options[i].shortoption);
 		else	fprintf(state.out_stream,"     --");
 		for(j = 0, k = 7,z = 0; j < strlen(options[i].longoption);j++, k++){
 			if(k < colonne[0])
