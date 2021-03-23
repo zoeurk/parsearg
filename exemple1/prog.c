@@ -31,7 +31,6 @@ void bye(void){
 int main(int argc, char **argv){
 	struct arguments _args_;
 	atexit(bye);
-	memset(&p,0,sizeof(struct parser_state));
 	if((args.state = calloc(1,sizeof(struct parser_state))) == NULL){
 		perror("calloc()");
 		exit(EXIT_FAILURE);
