@@ -475,7 +475,7 @@ main(int argc,char **argv)
     if(args.numbers[i]){
      end[i] = &args.numbers[i][strlen(args.numbers[i])-1];
      calcule.value.dnumber[i] = strtod(args.numbers[i],&end[i]);
-    if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
+    /*if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
      calcule.value.dnumber[i] = calcule.value.dnumber[i]*M_PI/180;
     else
      if((args.type&ORADIAN) && !(args.type&IDEGRES))
@@ -485,7 +485,7 @@ main(int argc,char **argv)
        calcule.value.dnumber[i] = calcule.value.dnumber[i]*180/M_PI;
       else
        if(!(args.type&ORADIAN) && (args.type&IDEGRES))
-        calcule.value.dnumber[i] = calcule.value.dnumber[i];
+        calcule.value.dnumber[i] = calcule.value.dnumber[i];*/
     }
    }
    format_tmp = (char *)format[set];
@@ -502,7 +502,7 @@ main(int argc,char **argv)
      if(args.numbers[i]){
       end[i] = &args.numbers[i][strlen(args.numbers[i])-1];
       calcule.value.fnumber[i] = strtof(args.numbers[i],&end[i]);
-      if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
+      /*if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
        calcule.value.dnumber[i] = calcule.value.fnumber[i]*M_PI/180;
       else
        if((args.type&ORADIAN) && !(args.type&IDEGRES))
@@ -512,7 +512,7 @@ main(int argc,char **argv)
          calcule.value.dnumber[i] = calcule.value.fnumber[i]*180/M_PI;
         else
          if(!(args.type&ORADIAN) && (args.type&IDEGRES))
-          calcule.value.dnumber[i] = calcule.value.fnumber[i];
+          calcule.value.dnumber[i] = calcule.value.fnumber[i];*/
     }
    }
    format_tmp = (char *)format[set];
@@ -529,7 +529,7 @@ main(int argc,char **argv)
     if(args.numbers[i]){
      end[i] = &args.numbers[i][strlen(args.numbers[i]-1)];
      calcule.value.ldnumber[i] = strtold(args.numbers[i],&end[i]);
-     if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
+     /*if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
       calcule.value.dnumber[i] = calcule.value.ldnumber[i]*M_PI/180;
      else
       if((args.type&ORADIAN) && !(args.type&IDEGRES))
@@ -539,7 +539,7 @@ main(int argc,char **argv)
         calcule.value.dnumber[i] = calcule.value.ldnumber[i]*180/M_PI;
        else
         if(!(args.type&ORADIAN) && (args.type&IDEGRES))
-         calcule.value.dnumber[i] = calcule.value.ldnumber[i];
+         calcule.value.dnumber[i] = calcule.value.ldnumber[i];*/
     }
    }
    format_tmp = (char *)format[set];
@@ -596,6 +596,49 @@ main(int argc,char **argv)
     		  break;
    }
  }
+   switch(set)
+   {
+    case DOUBLE : calcule.result.dresult = calcule.d.dfn(calcule.value.dnumber[0]);
+    if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
+     calcule.result.dresult = calcule.result.dresult*M_PI/180;
+    else
+     if((args.type&ORADIAN) && !(args.type&IDEGRES))
+      calcule.result.dresult = calcule.result.dresult;
+     else
+      if((args.type&ORADIAN) && (args.type&IDEGRES))
+       calcule.result.dresult = calcule.result.dresult*180/M_PI;
+      else
+       if(!(args.type&ORADIAN) && (args.type&IDEGRES))
+        calcule.result.dresult = calcule.result.dresult;
+    		  break;
+    case FLOAT  : calcule.result.fresult = calcule.f.ffn(calcule.value.fnumber[0]);
+    if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
+     calcule.result.fresult = calcule.result.fresult*M_PI/180;
+    else
+     if((args.type&ORADIAN) && !(args.type&IDEGRES))
+      calcule.result.fresult = calcule.result.fresult;
+     else
+      if((args.type&ORADIAN) && (args.type&IDEGRES))
+       calcule.result.fresult = calcule.result.fresult*180/M_PI;
+      else
+       if(!(args.type&ORADIAN) && (args.type&IDEGRES))
+        calcule.result.fresult = calcule.result.fresult;
+    		  break;
+    case LDOUBLE: calcule.result.ldresult = calcule.l.ldfn(calcule.value.ldnumber[0]);
+    if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
+     calcule.result.ldresult = calcule.result.ldresult*M_PI/180;
+    else
+     if((args.type&ORADIAN) && !(args.type&IDEGRES))
+      calcule.result.ldresult = calcule.result.ldresult;
+     else
+      if((args.type&ORADIAN) && (args.type&IDEGRES))
+       calcule.result.ldresult = calcule.result.ldresult*180/M_PI;
+      else
+       if(!(args.type&ORADIAN) && (args.type&IDEGRES))
+        calcule.result.ldresult = calcule.result.ldresult;
+    		  break;
+   }
+
  switch(set)
  {
   case DOUBLE:  printf(calcule.format,calcule.result.dresult);
@@ -605,6 +648,7 @@ main(int argc,char **argv)
   case LDOUBLE: printf(calcule.format,calcule.result.ldresult);
   	        break;
  }
+
  if((args.type&NEWLINE))
   printf("\n");
  if(need_to_be_created)
