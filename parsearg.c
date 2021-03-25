@@ -25,8 +25,8 @@ void upper(int *len, int inc,int max){
 		*len = 0;
 	}
 }
-void defaults(FILE *out, int *colonne, char shortoption, char *longoption, char *explain){
-	int j, k, l;
+void defaults(FILE *out, unsigned int *colonne, char shortoption, char *longoption, char *explain){
+	unsigned int j, k, l;
 	if(shortoption)
 		fprintf(out, " -%c, --", shortoption);
 	else	fprintf(out, "     --");
@@ -56,7 +56,7 @@ void defaults(FILE *out, int *colonne, char shortoption, char *longoption, char 
 }
 void parser_usage(struct parser *parser){
 	struct parser_state state;
-	int colonne[2] = {ARG_COLONNE,EXPLAIN_COLONNE}, i, j, k, l, m, z = 0/*, c = 0, c_*/;
+	unsigned int colonne[2] = {ARG_COLONNE,EXPLAIN_COLONNE}, i, j, k, l, m, n, z = 0/*, c = 0, c_*/;
 	char shortoption[3] = {'?', 0, 'V'},
 		*option[3] = {"help", "usage", "version"},
 		*explain[3] = {"show this message", "show short help", "show version"};
@@ -69,6 +69,8 @@ void parser_usage(struct parser *parser){
 		printf("\n");
 		
 	}
+	/*fprintf(stderr,"==========\n");
+	exit(0);*/
 	if(parser->state){
 		if(parser->state->arg_colonne)
 			colonne[0] = parser->state->arg_colonne;
@@ -109,7 +111,7 @@ void parser_usage(struct parser *parser){
 			}
 			fprintf(state.out_stream,"=");
 			k++;
-			for(k = k, j = 0;j < strlen(options[i].args)+((options[i].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL); j++, k++){
+			for(k = k, j = 0, n = 0;j < strlen(options[i].args)+((options[i].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL); j++, k++, n++){
 				if(k < colonne[0])
 					fprintf(state.out_stream,"%c",options[i].args[j]);
 				else{
@@ -259,6 +261,12 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 		state.parser = parser;
 		parser->state = &state;
 	}else{
+		/*state.argv = parser->state->argv;
+		state.argc = parser->state->argc;
+		state.name = parser->state->name;
+		state.input = parser->state->input;
+		state.err_stream = parser->state->err_stream;
+		state.out_stream = parser->state->out_stream;*/
 		memcpy(&state, parser->state, sizeof(struct parser_state));
 		if(parser->state->err_stream == NULL)
 			parser->state->err_stream = stderr;
@@ -272,8 +280,10 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 			parser->state->name = argv[0];
 		state.parser = parser;
 	}
-	for(state.arg_num = 0, len = 0, temporary = NULL; ok = 0, state.arg_num < state.argc; state.arg_num++){
-		if(state.arg_num < argc)
+	/*memcpy(&p,parser, sizeof(struct parser));
+	p.state = &state;*/
+	for(state.arg_num = 0, len = 0, temporary = NULL; ok = 0, state.arg_num < (unsigned int)state.argc; state.arg_num++){
+		if(state.arg_num < (unsigned int)argc)
 			state.next = state.arg_num+1;
 		/*else	state.next = 0;*/
 		if(strlen(state.argv[state.arg_num]) > 1 && strncmp(state.argv[state.arg_num],"--",2) == 0){
@@ -282,7 +292,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 				goto end;
 			}
 			if(strlen(state.argv[state.arg_num]) == 2){
-				if(state.quoted == 0 && state.argc > state.arg_num +1)state.quoted = state.arg_num + 1;
+				if(state.quoted == 0 && (unsigned int)state.argc > state.arg_num +1)state.quoted = state.arg_num + 1;
 				ok = 1;
 				end = 1;
 				goto end;
@@ -296,10 +306,10 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 						if((options[j].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL){
 							if(temporary)
 								parser->parse_opt(options[j].shortoption,++temporary, &state);
-							else	if(state.arg_num+1 < state.argc && *state.argv[state.arg_num+1] == '-'){
+							else	if(state.arg_num+1 < (unsigned int)state.argc && *state.argv[state.arg_num+1] == '-'){
 									parser->parse_opt(options[j].shortoption,state.argv[state.arg_num], &state);
 								}
-								else	if(state.arg_num+1 < state.argc && *state.argv[state.arg_num+1] != '-'){
+								else	if(state.arg_num+1 < (unsigned int)state.argc && *state.argv[state.arg_num+1] != '-'){
 										parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);
 									}else
 										parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);
@@ -307,7 +317,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 							if(temporary)
 								parser->parse_opt(options[j].shortoption,++temporary, &state);
 							else{
-								if(state.arg_num+1 < state.argc && *state.argv[state.arg_num+1] != '-'){
+								if(state.arg_num+1 < (unsigned int)state.argc && *state.argv[state.arg_num+1] != '-'){
 									parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);
 									state.arg_num++;
 								}else{	ERROR(state.err_stream,
@@ -349,7 +359,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 										parser->parse_opt(options[k].shortoption, &state.argv[state.arg_num][j+1], &state);
 										j += strlen(&state.argv[state.arg_num][j+1]);
 									}else
-										if(state.argc > state.arg_num+1 && *state.argv[state.arg_num+1] != '-'){
+										if((unsigned int)state.argc > state.arg_num+1 && *state.argv[state.arg_num+1] != '-'){
 											parser->parse_opt(options[k].shortoption, state.argv[state.arg_num+1], &state);
 											state.arg_num++;
 											j += strlen(&state.argv[state.arg_num][j+1]);
@@ -360,7 +370,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 										parser->parse_opt(options[k].shortoption, &state.argv[state.arg_num][j+1], &state);
 										j += strlen(&state.argv[state.arg_num][j+1]);
 									}else{	
-										if(state.argc > state.arg_num+1 && *state.argv[state.arg_num+1] != '-'){
+										if((unsigned int)state.argc > state.arg_num+1 && *state.argv[state.arg_num+1] != '-'){
 											parser->parse_opt(options[k].shortoption, state.argv[state.arg_num+1], &state);
 											state.arg_num++;
 											j += strlen(&state.argv[state.arg_num][j+1]);
@@ -389,9 +399,9 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 					}
 				}
 			}else	if(state.arg_num > 0){
-					if(*state.argv[state.arg_num] == '\\')
+					if(*state.argv[state.arg_num] == '\\'){
 						parser->parse_opt(0, &state.argv[state.arg_num][1], &state);
-					else
+					}else
 						parser->parse_opt(0, state.argv[state.arg_num], &state);
 					end:;
 				}
