@@ -1,5 +1,5 @@
 CC=gcc
-ARG=-g -Wall -Wpadded
+ARG=-g -Wall -Wpadded -Wextra
 
 all:libparser.so
 	 $(CC) $(ARG) math.c -o math -L. -lparsearg -lm

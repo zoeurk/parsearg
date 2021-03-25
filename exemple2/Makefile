@@ -1,5 +1,5 @@
 CC=gcc
-ARG=-g -Wall -Wpadded -ansi
+ARG=-g -Wall -Wpadded -ansi -Wextra
 
 all:libparser.so
 	 $(CC) $(ARG) basex.c -o basex -L. -lparsearg 
