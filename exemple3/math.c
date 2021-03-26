@@ -602,48 +602,6 @@ main(int argc,char **argv)
    }
    break;
  }
- /*switch(set)
- { 
-  case DOUBLE:
-    if(!(args.type&ORADIAN) && !(args.type&IRADIAN))
-     calcule.result.dresult = calcule.result.dresult*M_PI/180;
-    else
-     if((args.type&ORADIAN) && !(args.type&IRADIAN))
-      calcule.result.dresult = calcule.result.dresult;
-     else
-      if((args.type&ORADIAN) && (args.type&IRADIAN))
-       calcule.result.dresult = calcule.result.dresult*180/M_PI;
-      else
-       if(!(args.type&ORADIAN) && (args.type&IRADIAN))
-        calcule.result.dresult = calcule.result.dresult;
-   break;
-  case FLOAT:
-      if(!(args.type&ORADIAN) && !(args.type&IRADIAN))
-       calcule.result.fresult = calcule.result.fresult;
-      else
-       if((args.type&ORADIAN) && !(args.type&IRADIAN))
-        calcule.result.fresult = calcule.result.fresult*M_PI/180;
-       else
-        if((args.type&ORADIAN) && (args.type&IRADIAN))
-         calcule.result.fresult = calcule.result.fresult;
-        else
-         if(!(args.type&ORADIAN) && (args.type&IRADIAN))
-          calcule.result.fresult = calcule.result.fresult*180/M_PI;
-   break;
-  case LDOUBLE:
-     if(!(args.type&ORADIAN) && !(args.type&IRADIAN))
-      calcule.result.ldresult = calcule.result.ldresult;
-     else
-      if((args.type&ORADIAN) && !(args.type&IRADIAN))
-       calcule.result.ldresult = calcule.result.ldresult*M_PI/180;
-      else
-       if((args.type&ORADIAN) && (args.type&IRADIAN))
-        calcule.result.ldresult = calcule.result.ldresult;
-       else
-        if(!(args.type&ORADIAN) && (args.type&IRADIAN))
-         calcule.result.ldresult = calcule.result.ldresult*180/M_PI;
-   break;
-  }*/
  switch(set)
  {
   case DOUBLE:  printf(calcule.format,calcule.result.dresult);
