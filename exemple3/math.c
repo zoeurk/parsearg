@@ -565,7 +565,7 @@ main(int argc,char **argv)
      break;
     default: break;
    }
-  if((calcule.format = calloc(16+1+calcule.formatlen,sizeof(char))) == NULL) /*16+1: Je ne sais pas pourquoi*/
+  if((calcule.format = calloc(16+1+calcule.formatlen,sizeof(char))) == NULL)
   {
    perror("malloc()");
    exit(EXIT_FAILURE);
