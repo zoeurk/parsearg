@@ -73,8 +73,8 @@ enum functions
 }functions;
 enum type
 {
- DOUBLE  = 0,
- FLOAT   = 1,
+ FLOAT   = 0,
+ DOUBLE  = 1,
  LDOUBLE = 2,
  IRADIAN = 4,
  ORADIAN = 8,
