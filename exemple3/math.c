@@ -33,7 +33,7 @@ options[] = {	{"double",'d', 0, NULL,"uliser une valeur double"},
 		{"virgule",'O',0, "FORMAT","afficher nombre de chiffre après la virgule"},
 		{"radian",'R',0, NULL,"afficher le résultat en radian plutôt quand degrès"},
 		{"degre",'r',0, NULL,"les entrées sont en degrès plutôt quand radian"},
-		{"odegres",'x',NULL,0,"la sortie en degrès"},
+		{"odegres",'x',0, NULL,"la sortie en degrès"},
 		{"newline",'N',0, NULL,"affiche le resultat avec un nouvelle ligne: \"result\\n\""},
 		/*{"help",'h', NULL, 0, "try -? or \"--usage\""},*/
 		{0}
@@ -70,7 +70,7 @@ enum type
  DOUBLE  = 0,
  FLOAT   = 1,
  LDOUBLE = 2,
- IDEGRES = 4,
+ IRADIAN = 4,
  ORADIAN = 8,
  ODEGRES = 16,
  NEWLINE = 32
@@ -194,7 +194,7 @@ parse_opt(int key, char *arg, struct parser_state *state)
   	    break;
   case 'D': args->type |= LDOUBLE;
   	    break;
-  case 'r': args->type |= IDEGRES;
+  case 'r': args->type |= IRADIAN;
   	    break;
   case 'R': args->type |= ORADIAN;
   	    break;
@@ -341,7 +341,7 @@ main(int argc,char **argv)
  int n,i,set;
  bool need_to_be_created = 0;
  parser_parse(&argp, argc, argv, &args);
- if(args.function == INIT)
+ if((int)args.function == INIT)
  {
   fprintf(stderr,"Aucune opération de fournie!!!\n");
   exit(EXIT_FAILURE);
@@ -483,13 +483,13 @@ main(int argc,char **argv)
     if(args.numbers[i]){
      end[i] = &args.numbers[i][strlen(args.numbers[i])-1];
      calcule.value.dnumber[i] = strtod(args.numbers[i],&end[i]);
-    if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
+    if(!(args.type&ORADIAN) && !(args.type&IRADIAN))
      calcule.value.dnumber[i] = calcule.value.dnumber[i]*PI/180;
     else
-     if(((args.type&ORADIAN) && !(args.type&IDEGRES)) || (!(args.type&ORADIAN) && (args.type&IDEGRES)))
+     if(((args.type&ORADIAN) && !(args.type&IRADIAN)) || (!(args.type&ORADIAN) && (args.type&IRADIAN)))
       calcule.value.dnumber[i] = calcule.value.dnumber[i];
      else
-      if((args.type&ORADIAN) && (args.type&IDEGRES))
+      if((args.type&ORADIAN) && (args.type&IRADIAN))
        calcule.value.dnumber[i] = calcule.value.dnumber[i]*180/PI;
       /*else
        if(!(args.type&ORADIAN) && (args.type&IDEGRES))
@@ -510,16 +510,16 @@ main(int argc,char **argv)
      if(args.numbers[i]){
       end[i] = &args.numbers[i][strlen(args.numbers[i])-1];
       calcule.value.fnumber[i] = strtof(args.numbers[i],&end[i]);
-    if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
+    if(!(args.type&ORADIAN) && !(args.type&IRADIAN))
      calcule.value.dnumber[i] = calcule.value.dnumber[i]*PI/180;
     else
-     if(((args.type&ORADIAN) && !(args.type&IDEGRES)) || (!(args.type&ORADIAN) && (args.type&IDEGRES)))
+     if(((args.type&ORADIAN) && !(args.type&IRADIAN)) || (!(args.type&ORADIAN) && (args.type&IRADIAN)))
       calcule.value.dnumber[i] = calcule.value.dnumber[i];
      else
-      if((args.type&ORADIAN) && (args.type&IDEGRES))
+      if((args.type&ORADIAN) && (args.type&IRADIAN))
        calcule.value.dnumber[i] = calcule.value.dnumber[i]*180/PI;
       /*else
-       if(!(args.type&ORADIAN) && (args.type&IDEGRES))
+       if(!(args.type&ORADIAN) && (args.type&IRADIAN))
         calcule.value.dnumber[i] = calcule.value.dnumber[i];*/
     }
    }
@@ -537,16 +537,16 @@ main(int argc,char **argv)
     if(args.numbers[i]){
      end[i] = &args.numbers[i][strlen(args.numbers[i]-1)];
      calcule.value.ldnumber[i] = strtold(args.numbers[i],&end[i]);
-    if(!(args.type&ORADIAN) && !(args.type&IDEGRES))
+    if(!(args.type&ORADIAN) && !(args.type&IRADIAN))
      calcule.value.dnumber[i] = calcule.value.dnumber[i]*PI/180;
     else
-     if(((args.type&ORADIAN) && !(args.type&IDEGRES)) || (!(args.type&ORADIAN) && (args.type&IDEGRES)))
+     if(((args.type&ORADIAN) && !(args.type&IRADIAN)) || (!(args.type&ORADIAN) && (args.type&IRADIAN)))
       calcule.value.dnumber[i] = calcule.value.dnumber[i];
      else
-      if((args.type&ORADIAN) && (args.type&IDEGRES))
+      if((args.type&ORADIAN) && (args.type&IRADIAN))
        calcule.value.dnumber[i] = calcule.value.dnumber[i]*180/PI;
       /*else
-       if(!(args.type&ORADIAN) && (args.type&IDEGRES))
+       if(!(args.type&ORADIAN) && (args.type&IRADIAN))
         calcule.value.dnumber[i] = calcule.value.dnumber[i];*/
     }
    }
