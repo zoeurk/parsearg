@@ -71,8 +71,9 @@ enum type
  FLOAT   = 1,
  LDOUBLE = 2,
  IDEGRES = 4,
- ORADIAN = 8,
- NEWLINE = 16
+ ODEGRE = 8,
+ ORADIAN = 16,
+ NEWLINE = 32
 }type;
 
 struct arguments
