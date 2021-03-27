@@ -1,0 +1,2 @@
+#Vous aver le droit d'utiliser, de modifier et de redistribuer ce programme
+export LD_LIBRARY_PATH=/home/thomas/Projets/parse_arg/*:$LD_LIBRARY_PATH
