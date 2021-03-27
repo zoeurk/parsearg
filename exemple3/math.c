@@ -3,44 +3,41 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
-/*#include <argp.h>*/
+#include <argp.h>
 #include <stdarg.h>
 #include <string.h>
-#include "parsearg.h"
 
 #define PI 3.141592653589793
 
-/*const char *argp_program_version= "math-0.1";
-const char *argp_program_bug_address = "zoeurk@gmail.com";*/
-struct info program = { "version 1.0", "zoeurk@gmail.com" };
-/*static char doc[] = "Simple program which use some function of 'math.h.'\"(gcc -lm)\"";*/
-struct parser_option
-options[] = {	{"double",'d', 0, NULL,"uliser une valeur double"},
-		{"float",'F', 0,NULL,"utiliser une valeur float"},
-		{"dlong",'D', 0, NULL,"utiliser une valeur double long"},
-		{"cos",'c',0, "X","cosinus d'un nombre X"},
-		{"sin",'s',0, "X","sinus d'un nombre X"},
-		{"tan",'t',0, "X","tangente d'un nombre X"},
-		{"acos",'a',0, "X", "cosinus d'un nombre X"},
-		{"asin",'A',0, "X", "sinus d'un nombre X"},
-		{"atan",'T', 0,"X","tangente d'un nombre X"},
-		{"sqrt",'S',0, "X","carré d'un nombre X"},
-		{"exp",'e',0, "X","valeur exponentiel d' un nombre X"},
-		{"log",'l',0, "X","logarithme naturel (en base 'e') d'un nombre X"},
-		{"log10",'L',0,"X","logarithme naturel (en base 10) d'un nombre X"},
-		{"fabs",'f',0, "X","valeur absolue d'un nombre X"},
-		{"ceil",'C',0, "X","arrondi un nombre X à un entier plus petit"},
-		{"floor",'o',0, "X","arrondi un nombre X à un entier plus grand"},
-		{"pow",'p',0, "X=x,Y=y","puissance d'une valeur X élevé à la valeur Y"},
-		{"fmod",'m',0, "X=x,Y=y","reste de X/Y"},
-		{"virgule",'O',0, "FORMAT","afficher nombre de chiffre après la virgule"},
-		{"radian",'R',0, NULL,"afficher le résultat en radian plutôt quand degrès"},
-		{"degre",'r',0, NULL,"les entrées sont en radian plutôt quand degrès"},
-		{"odegres",'x',0, NULL,"la sortie en degrès"},
-		{"newline",'N',0, NULL,"affiche le resultat avec un nouvelle ligne: \"result\\n\""},
-		/*{"help",'h', NULL, 0, "try -? or \"--usage\""},*/
-		{0}
+const char *argp_program_version= "math-0.1";
+const char *argp_program_bug_address = "zoeurk@gmail.com";
+static char doc[] = "Simple program which use some function of 'math.h.'\"(gcc -lm)\"";
 
+static struct argp_option
+options[] = {	{"double",'d', NULL,0,"uliser une valeur double", 0},
+		{"float",'F',NULL,0,"utiliser une valeur float", 0},
+		{"dlong",'D',NULL,0,"utiliser une valeur double long", 0},
+		{"cos",'c',"X",0,"cosinus d'un nombre X", 1},
+		{"sin",'s',"X",0,"sinus d'un nombre X", 1},
+		{"tan",'t',"X",0,"tangente d'un nombre X",1},
+		{"acos",'a',"X",0,"cosinus d'un nombre X", 1},
+		{"asin",'A',"X",0,"sinus d'un nombre X", 1},
+		{"atan",'T',"X",0,"tangente d'un nombre X",1},
+		{"sqrt",'S',"X",0,"carré d'un nombre X",1},
+		{"exp",'e',"X",0,"valeur exponentiel d' un nombre X",1},
+		{"log",'l',"X",0,"logarithme naturel (en base 'e') d'un nombre X", 1},
+		{"log10",'L',"X",0,"logarithme naturel (en base 10) d'un nombre X", 1},
+		{"fabs",'f',"X",0,"valeur absolue d'un nombre X", 1},
+		{"ceil",'C',"X",0,"arrondi un nombre X à un entier plus petit", 1},
+		{"floor",'o',"X",0,"arrondi un nombre X à un entier plus grand", 1},
+		{"pow",'p',"X:Y",0,"puissance d'une valeur X élevé à la valeur Y",2},
+		{"fmod",'m',"X:Y",0,"reste de X/Y",2},
+		{"virgule",'O',"FORMAT",0,"afficher nombre de chiffre après la virgule",4},
+		{"Radian",'R',NULL,0,"afficher le résultat en radian plutôt quand degrès",3},
+		{"radian",'r',NULL,0,"les entrées sont en radian plutôt quand degrès",3},
+		{"odegres",'x',NULL,0,"la sortie en degrès",3},
+		{"newline",'N',NULL,0,"affiche le resultat avec un nouvelle ligne: \"result\\n\"", 5},
+		{0}
  };
 typedef char bool;
 enum numbers{
@@ -81,7 +78,6 @@ enum type
  ODEGRES = 16,
  NEWLINE = 32
 }type;
-
 struct arguments
 {
  size_t type,function;
@@ -141,15 +137,15 @@ comput_two_numbers(struct arguments **args,char *option)
  }
  return 0;
 }
-void
-parse_opt(int key, char *arg, struct parser_state *state)
+static error_t
+parse_opt(int key, char *arg, struct argp_state *state)
 {
  struct arguments *args = state->input;
+ int i;
  switch(key)
  {
   case 'c': args->function = COS;
   	    args->numbers[0] = arg;
-
   	    break;
   case 's': args->function = SIN;
   	    args->numbers[0] = arg;
@@ -191,7 +187,7 @@ parse_opt(int key, char *arg, struct parser_state *state)
   	    if(comput_two_numbers(&args,arg) < 0)
 	    {
 	     fprintf(stderr,"Missing(/Bad) arguments for \"-%c\".\n",key);
-	     /*parser_usage(state);*/
+	     argp_usage(state);
 	     exit(EXIT_FAILURE);
 	    }
   	    break;
@@ -199,7 +195,7 @@ parse_opt(int key, char *arg, struct parser_state *state)
   	    if(comput_two_numbers(&args,arg) < 0)
 	    {
 	     fprintf(stderr,"Missing(/Bad) arguments for \"-%c\".\n",key);
-	     /*parser_usage(state);*/
+	     argp_usage(state);
 	     exit(EXIT_FAILURE);
 	    }
   	    break;
@@ -217,10 +213,18 @@ parse_opt(int key, char *arg, struct parser_state *state)
   	    break;
   case 'N': args->type |= NEWLINE;
   	    break;
-  case 'O': args->format = arg;
-  	/*parser_usage(state->parser);*/
+  case 'O': for(i = 0; (unsigned long int)i <strlen(arg); i++){
+	     if(arg[i] < 48 || arg[i] > 57){
+		     fprintf(stderr,"Bad value for format:\'%s\'.\n",arg);
+		     args->format = NULL;
+		     i = 0;
+		     break;
+	     }
+	    }
+	    if((unsigned long int)i == strlen(arg))args->format = arg;
+	    else	args->format = NULL;
   	    break;
-  /*case ARGP_KEY_END:
+  case ARGP_KEY_END:
   	    break;
   case ARGP_KEY_ARG:
   	    if( (arg && strlen(arg) > 0)|| &state->argv[state->next])
@@ -229,17 +233,13 @@ parse_opt(int key, char *arg, struct parser_state *state)
 	     break;
 	    }
   	    state->next = state->argc;
-	    break;*/
+	    break;
   default:
-  	fprintf(stderr,"Unanderstand parameter: \'%s\'.\nTry --help or --usage for more information.\n", arg);
-	exit(EXIT_FAILURE);
+  	    return ARGP_ERR_UNKNOWN;
  }
- /*return 0;*/
+ return 0;
 }
-const char about[] = "Simple program which use some function of 'math.h.'\"(gcc -lm)\"";
-static struct parser argp = { options, parse_opt, "OPTIONS", NULL, \
-				about, \
-				&program, NULL };
+static struct argp argp = { options, parse_opt, NULL, doc, NULL, NULL, NULL };
 void
 check_double_value(int n,char *value,...)
 {
@@ -249,7 +249,6 @@ check_double_value(int n,char *value,...)
  double result;
  for(i = n; i > 0; i--)
  {
-printf("%i\n",i);
   if(i < n)
   {
    val = va_arg(ap, char *);
@@ -331,17 +330,19 @@ check_long_double_value(int n, char *value,...)
  }
  va_end(ap);
 }
-int
-check_virgule(char *string)
+/*int
+check_virgule(char *buffer, char *string)
 {
  char buffer[1024];
- if(sscanf(string,"%[0-9.,]",buffer) ==0)
+ if(strlen(string) > 1023 || sscanf(string,"%[0-9]*",buffer) ==0)
  {
-  perror("check_vigule:sscanf())");
+  fprintf(stderr, "Bad format: \'%s\'.\n", string);
   return -1;
  }
+ printf("=>%s\n", buffer);
+ strcpy(string,buffer);
  return 0;
-}
+}*/
 int
 main(int argc,char **argv)
 {
@@ -356,7 +357,7 @@ main(int argc,char **argv)
  size_t len,len_;
  int n,i,set;
  bool need_to_be_created = 0;
- parser_parse(&argp, argc, argv, &args);
+ argp_parse(&argp, argc, argv, 0, 0, &args);
  if((int)args.function == INIT)
  {
   fprintf(stderr,"Aucune opération de fournie!!!\n");
@@ -378,17 +379,17 @@ main(int argc,char **argv)
 	          n = 1;
 	          break;
      case SQRT : calcule.d.dfn = &sqrt;
-     		 n = 1;
-		 break;
+ 	       n = 1;
+	       break;
      case EXP  : calcule.d.dfn = &exp;
-	         n = 1;
-	         break;
+	          n = 1;
+	          break;
      case LOG  : calcule.d.dfn = &log;
-  	         n = 1;
-  	         break;
+  	          n = 1;
+  	          break;
      case LOG10: calcule.d.dfn = &log10;
-  	         n = 1;
-  	         break;
+  	          n = 1;
+  	          break;
      case FABS : calcule.d.dfn = &fabs;
  	          n = 1;
   	          break;
@@ -535,12 +536,13 @@ main(int argc,char **argv)
       if((args.type&ORADIAN) && (args.type&IRADIAN))
        calcule.value.dnumber[i] = calcule.value.dnumber[i]*180/PI;
       /*else
-       if(!(args.type&ORADIAN) && (args.type&IDEGRES))
+       if(!(args.type&ORADIAN) && (args.type&IRADIAN))
         calcule.value.dnumber[i] = calcule.value.dnumber[i];*/
     }
    }
    format_tmp = (char *)format[set];
-   if(!args.format || check_virgule(args.format))
+   /*if(!args.format || check_virgule(args.format))*/
+   if(!args.format)
     calcule.format = (char *)___dprintf___;
    else
     /*Prepare to %.'args.format'lf*/
@@ -553,22 +555,23 @@ main(int argc,char **argv)
      if(args.numbers[i]){
       end[i] = &args.numbers[i][strlen(args.numbers[i])-1];
       calcule.value.fnumber[i] = strtof(args.numbers[i],&end[i]);
-    if(!(args.type&ORADIAN) && !(args.type&IRADIAN))
-     calcule.value.dnumber[i] = calcule.value.dnumber[i]*PI/180;
-    else
-     if(((args.type&ORADIAN) && !(args.type&IRADIAN)) || (!(args.type&ORADIAN) && (args.type&IRADIAN)))
-      calcule.value.dnumber[i] = calcule.value.dnumber[i];
-     else
-      if((args.type&ORADIAN) && (args.type&IRADIAN))
-       calcule.value.dnumber[i] = calcule.value.dnumber[i]*180/PI;
-      /*else
-       if(!(args.type&ORADIAN) && (args.type&IRADIAN))
-        calcule.value.dnumber[i] = calcule.value.dnumber[i];*/
+      if(!(args.type&ORADIAN) && !(args.type&IRADIAN))
+       calcule.value.fnumber[i] = calcule.value.fnumber[i]*PI/180;
+      else
+       if(((args.type&ORADIAN) && !(args.type&IRADIAN)) || (!(args.type&ORADIAN) && (args.type&IRADIAN)))
+        calcule.value.fnumber[i] = calcule.value.fnumber[i];
+       else
+        if((args.type&ORADIAN) && (args.type&IRADIAN))
+         calcule.value.fnumber[i] = calcule.value.fnumber[i]*180/PI;
+        /*else
+         if(!(args.type&ORADIAN) && (args.type&IRADIAN))
+          calcule.value.fnumber[i] = calcule.value.fnumber[i];*/
     }
    }
    format_tmp = (char *)format[set];
-   if(!args.format || check_virgule(args.format))
-    calcule.format = (char *)___fprintf___;
+   /*if(!args.format || check_virgule(args.format))*/
+   if(!args.format)
+     calcule.format = (char *)___fprintf___;
    else
     /*Prepare to %0.'args.format'lf*/
     need_to_be_created = 2;
@@ -580,21 +583,22 @@ main(int argc,char **argv)
     if(args.numbers[i]){
      end[i] = &args.numbers[i][strlen(args.numbers[i]-1)];
      calcule.value.ldnumber[i] = strtold(args.numbers[i],&end[i]);
-    if(!(args.type&ORADIAN) && !(args.type&IRADIAN))
-     calcule.value.dnumber[i] = calcule.value.dnumber[i]*PI/180;
-    else
-     if(((args.type&ORADIAN) && !(args.type&IRADIAN)) || (!(args.type&ORADIAN) && (args.type&IRADIAN)))
-      calcule.value.dnumber[i] = calcule.value.dnumber[i];
+     if(!(args.type&ORADIAN) && !(args.type&IRADIAN))
+      calcule.value.ldnumber[i] = calcule.value.ldnumber[i]*PI/180;
      else
-      if((args.type&ORADIAN) && (args.type&IRADIAN))
-       calcule.value.dnumber[i] = calcule.value.dnumber[i]*180/PI;
-      /*else
-       if(!(args.type&ORADIAN) && (args.type&IRADIAN))
-        calcule.value.dnumber[i] = calcule.value.dnumber[i];*/
+      if(((args.type&ORADIAN) && !(args.type&IRADIAN)) || (!(args.type&ORADIAN) && (args.type&IRADIAN)))
+       calcule.value.ldnumber[i] = calcule.value.ldnumber[i];
+      else
+       if((args.type&ORADIAN) && (args.type&IRADIAN))
+        calcule.value.ldnumber[i] = calcule.value.ldnumber[i]*180/PI;
+       /*else
+        if(!(args.type&ORADIAN) && (args.type&IRADIAN))
+         calcule.value.ldnumber[i] = calcule.value.ldnumber[i];*/
     }
    }
    format_tmp = (char *)format[set];
-   if(!args.format || check_virgule(args.format))
+   /*if(!args.format || check_virgule(args.format))*/
+   if(!args.format)
     calcule.format = (char *)___ldprintf___;
    else
     need_to_be_created = 3;
@@ -633,7 +637,7 @@ main(int argc,char **argv)
     		  if((args.type&IRADIAN) == IRADIAN && (args.type&ODEGRES) == ODEGRES)
     		  	calcule.result.dresult = calcule.result.dresult *180/PI;
     		  break;
-    case FLOAT:   calcule.result.fresult = calcule.f.ffn2(calcule.value.fnumber[0],calcule.value.fnumber[1]);
+    case FLOAT: calcule.result.fresult = calcule.f.ffn2(calcule.value.fnumber[0],calcule.value.fnumber[1]);
     		  if((args.type&IRADIAN) == IRADIAN && (args.type&ODEGRES) == ODEGRES)
     		  	calcule.result.fresult = calcule.result.fresult *180/PI;
     		  break;
@@ -649,15 +653,15 @@ main(int argc,char **argv)
     case DOUBLE : calcule.result.dresult = calcule.d.dfn(calcule.value.dnumber[0]);
     		  if((args.type&IRADIAN) == IRADIAN && (args.type&ODEGRES) == ODEGRES)
     		  	calcule.result.dresult = calcule.result.dresult *180/PI;
-    		  break;
+ 		  break;
     case FLOAT  : calcule.result.fresult = calcule.f.ffn(calcule.value.fnumber[0]);
-     		  if((args.type&IRADIAN) == IRADIAN && (args.type&ODEGRES) == ODEGRES)
+    		  if((args.type&IRADIAN) == IRADIAN && (args.type&ODEGRES) == ODEGRES)
     		  	calcule.result.fresult = calcule.result.fresult *180/PI;
-   		  break;
+ 		  break;
     case LDOUBLE: calcule.result.ldresult = calcule.l.ldfn(calcule.value.ldnumber[0]);
     		  if((args.type&IRADIAN) == IRADIAN && (args.type&ODEGRES) == ODEGRES)
     		  	calcule.result.ldresult = calcule.result.ldresult *180/PI;
-    		  break;
+ 		  break;
    }
    break;
  }
