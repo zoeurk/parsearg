@@ -349,7 +349,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 				ok = 1;
 				goto end;
 			}
-			if(*state.argv[state.arg_num] == '-'){
+			if(*state.argv[state.arg_num] == '-' && strlen(state.argv[state.arg_num]) >1){
 				for(j = 1; ok = 0, state.argv[state.arg_num][j] != 0; j++){
 					for(k = 0; ok == 0 && options[k].longoption != 0; k++){
 						if((ok = (state.argv[state.arg_num][j] == options[k].shortoption))){
@@ -404,6 +404,11 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 					}else
 						parser->parse_opt(0, state.argv[state.arg_num], &state);
 					end:;
+				}else{
+					if(strlen(state.argv[1]) < 2){
+						fprintf(state.err_stream, "Invalid parameter.\nTry --help or --usage for mor information.\n");
+						exit(EXIT_FAILURE);
+					}
 				}
 		}
 	}
