@@ -445,8 +445,9 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 							ERROR(state.err_stream, "Unknow argument:\'-%c\'\nTry --help or --usage for mor information.\n",
 							state.argv[state.arg_num][j]);
 						}else{
-							fprintf(state.err_stream, "Invalid parameter.\nTry --help or --usage for mor information.\n");
-							exit(EXIT_FAILURE);
+							parser->parse_opt(0, &state.argv[state.arg_num][2], &state);
+								/*fprintf(state.err_stream, "Invalid parameter.\nTry --help or --usage for mor information.\n");
+								exit(EXIT_FAILURE);*/
 						}
 					}
 				}
