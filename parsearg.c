@@ -427,7 +427,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 									}
 								}
 							}else{
-								printf("*************\n");
+								/*printf("*************\n");*/
 								parser->parse_opt(options[k].shortoption, NULL, &state);
 							}
 						}
