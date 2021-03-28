@@ -327,7 +327,9 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 								}else{	/*ERROR(state.err_stream,
 										"=>Argument required for \'%s\'\nTry --help or --usage for more information.\n",
 										state.argv[state.arg_num]);*/
-											if(state.argc > (int)(state.arg_num +1) && (*state.argv[state.arg_num+1] == '-' && (int)strlen(state.argv[state.arg_num+1])>1)){
+											if(state.argc > (int)(state.arg_num +1) && 
+												(*state.argv[state.arg_num+1] == '-' && 
+												(int)strlen(state.argv[state.arg_num+1])>1)){
 											ERROR(state.err_stream,
 												"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",
 												state.argv[state.arg_num][j]);
@@ -339,7 +341,8 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 												j += strlen(&state.argv[state.arg_num][j+1]);
 												}else{
 											ERROR(state.err_stream,
-												"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",state.argv[state.arg_num][j]);
+												"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",
+												state.argv[state.arg_num][j]);
 												}
 											}
 								}
@@ -423,8 +426,10 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 										}
 									}
 								}
-							}else
+							}else{
+								printf("*************\n");
 								parser->parse_opt(options[k].shortoption, NULL, &state);
+							}
 						}
 					}
 					if(ok == 0){
@@ -436,8 +441,13 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 							parser_version(state.parser);
 							exit(EXIT_SUCCESS);
 						}
-						ERROR(state.err_stream, "Unknow argument:\'-%c\'\nTry --help or --usage for mor information.\n",
+						if(state.argv[state.arg_num][j] != '-'){
+							ERROR(state.err_stream, "Unknow argument:\'-%c\'\nTry --help or --usage for mor information.\n",
 							state.argv[state.arg_num][j]);
+						}else{
+							fprintf(state.err_stream, "Invalid parameter.\nTry --help or --usage for mor information.\n");
+							exit(EXIT_FAILURE);
+						}
 					}
 				}
 			}else	if(state.arg_num > 0){
