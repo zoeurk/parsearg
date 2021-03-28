@@ -312,7 +312,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 								}
 								else	if(state.arg_num+1 < (unsigned int)state.argc && *state.argv[state.arg_num+1] != '-'){
 										parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);
-										parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);
+										/*parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);*/
 										state.arg_num++;
 									}else{
 										parser->parse_opt(options[j].shortoption,state.argv[state.arg_num], &state);
@@ -383,7 +383,10 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 											state.arg_num++;
 											j += strlen(&state.argv[state.arg_num][j+1]);
 										}else{
-											if((unsigned int)state.argc > state.arg_num+1 && *state.argv[state.arg_num+1] == '-' && strlen(state.argv[state.arg_num+1]) == 1){
+											if((unsigned int)state.argc > state.arg_num+1 &&
+												*state.argv[state.arg_num+1] == '-' && 
+												strlen(state.argv[state.arg_num+1]) == 1
+											){
 											parser->parse_opt(options[k].shortoption, state.argv[state.arg_num+1], &state);
 											state.arg_num++;
 											j += strlen(&state.argv[state.arg_num][j+1]);
@@ -400,8 +403,11 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 											state.arg_num++;
 											j += strlen(&state.argv[state.arg_num][j+1]);
 										}else{
-											if(state.argc > (int)(state.arg_num +1) && (*state.argv[state.arg_num+1] == '-' && (int)strlen(state.argv[state.arg_num+1])>1)){
-											ERROR(state.err_stream,
+											if(state.argc > (int)(state.arg_num +1) &&
+												(*state.argv[state.arg_num+1] == '-' && 
+												(int)strlen(state.argv[state.arg_num+1])>1)
+											){
+												ERROR(state.err_stream,
 												"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",
 												state.argv[state.arg_num][j]);
 											}else{
@@ -410,8 +416,8 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 												state.arg_num++;
 												j += strlen(&state.argv[state.arg_num][j+1]);
 												}else{
-											ERROR(state.err_stream,
-												"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",state.argv[state.arg_num][j]);
+													ERROR(state.err_stream,
+													"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",state.argv[state.arg_num][j]);
 												}
 											}
 										}
@@ -440,12 +446,13 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 					}else
 						parser->parse_opt(0, state.argv[state.arg_num], &state);
 					end:;
-				}else{
+				}/*else{
 					if(state.argv[1] && strlen(state.argv[1]) < 2){
+						//parser->parse_opt(0, state.argv[state.arg_num +1], &state);
 						fprintf(state.err_stream, "Invalid parameter.\nTry --help or --usage for mor information.\n");
 						exit(EXIT_FAILURE);
 					}
-				}
+				}*/
 		}
 	}
 }
