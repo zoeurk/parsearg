@@ -282,7 +282,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 	}
 	/*memcpy(&p,parser, sizeof(struct parser));
 	p.state = &state;*/
-	for(state.arg_num = 0, len = 0, temporary = NULL; ok = 0, state.arg_num < (unsigned int)state.argc; state.arg_num++){
+	for(state.arg_num = 1, len = 0, temporary = NULL; ok = 0, state.arg_num < (unsigned int)state.argc; state.arg_num++){
 		if(state.arg_num < (unsigned int)argc)
 			state.next = state.arg_num+1;
 		/*else	state.next = 0;*/
@@ -306,17 +306,13 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 						if((options[j].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL){
 							if(temporary)
 								parser->parse_opt(options[j].shortoption,++temporary, &state);
-							else	if(state.arg_num+1 < (unsigned int)state.argc && *state.argv[state.arg_num+1] == '-' && strlen(state.argv[state.arg_num+1])== 1){
-									parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);
-									state.arg_num++;
+							else	if(state.arg_num+1 < (unsigned int)state.argc && *state.argv[state.arg_num+1] == '-'){
+									parser->parse_opt(options[j].shortoption,state.argv[state.arg_num], &state);
 								}
 								else	if(state.arg_num+1 < (unsigned int)state.argc && *state.argv[state.arg_num+1] != '-'){
 										parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);
-										/*parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);*/
-										state.arg_num++;
-									}else{
-										parser->parse_opt(options[j].shortoption,state.argv[state.arg_num], &state);
-									}
+									}else
+										parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);
 						}else{
 							if(temporary)
 								parser->parse_opt(options[j].shortoption,++temporary, &state);
@@ -324,27 +320,9 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 								if(state.arg_num+1 < (unsigned int)state.argc && *state.argv[state.arg_num+1] != '-'){
 									parser->parse_opt(options[j].shortoption,state.argv[state.arg_num+1], &state);
 									state.arg_num++;
-								}else{	/*ERROR(state.err_stream,
-										"=>Argument required for \'%s\'\nTry --help or --usage for more information.\n",
-										state.argv[state.arg_num]);*/
-											if(state.argc > (int)(state.arg_num +1) && 
-												(*state.argv[state.arg_num+1] == '-' && 
-												(int)strlen(state.argv[state.arg_num+1])>1)){
-											ERROR(state.err_stream,
-												"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",
-												state.argv[state.arg_num][j]);
-											}else{
-												if(state.argc > (int)(state.arg_num +1)){
-												/*parser->parse_opt(options[k].shortoption, state.argv[state.arg_num+1], &state);*/
-												/*printf("************\n");*/
-												state.arg_num++;
-												j += strlen(&state.argv[state.arg_num][j+1]);
-												}else{
-											ERROR(state.err_stream,
-												"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",
-												state.argv[state.arg_num][j]);
-												}
-											}
+								}else{	ERROR(state.err_stream,
+										"Argument required for \'%s\'\nTry --help or --usage for more information.\n",
+										state.argv[state.arg_num]);
 								}
 							}
 						}
@@ -385,17 +363,8 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 											parser->parse_opt(options[k].shortoption, state.argv[state.arg_num+1], &state);
 											state.arg_num++;
 											j += strlen(&state.argv[state.arg_num][j+1]);
-										}else{
-											if((unsigned int)state.argc > state.arg_num+1 &&
-												*state.argv[state.arg_num+1] == '-' && 
-												strlen(state.argv[state.arg_num+1]) == 1
-											){
-											parser->parse_opt(options[k].shortoption, state.argv[state.arg_num+1], &state);
-											state.arg_num++;
-											j += strlen(&state.argv[state.arg_num][j+1]);
-											}else
-												parser->parse_opt(options[k].shortoption, NULL, &state);
-										}
+										}else
+											parser->parse_opt(options[k].shortoption, NULL, &state);
 								}else{
 									if(strlen(&state.argv[state.arg_num][j]) > 1){
 										parser->parse_opt(options[k].shortoption, &state.argv[state.arg_num][j+1], &state);
@@ -406,30 +375,14 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 											state.arg_num++;
 											j += strlen(&state.argv[state.arg_num][j+1]);
 										}else{
-											if(state.argc > (int)(state.arg_num +1) &&
-												(*state.argv[state.arg_num+1] == '-' && 
-												(int)strlen(state.argv[state.arg_num+1])>1)
-											){
-												ERROR(state.err_stream,
+											ERROR(state.err_stream,
 												"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",
 												state.argv[state.arg_num][j]);
-											}else{
-												if(state.argc > (int)(state.arg_num +1)){
-												parser->parse_opt(options[k].shortoption, state.argv[state.arg_num+1], &state);
-												state.arg_num++;
-												j += strlen(&state.argv[state.arg_num][j+1]);
-												}else{
-													ERROR(state.err_stream,
-													"Missing argument for :\'-%c\'\nTry --help or --usage for more inforamtion.\n",state.argv[state.arg_num][j]);
-												}
-											}
 										}
 									}
 								}
-							}else{
-								/*printf("*************\n");*/
+							}else
 								parser->parse_opt(options[k].shortoption, NULL, &state);
-							}
 						}
 					}
 					if(ok == 0){
@@ -441,29 +394,19 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 							parser_version(state.parser);
 							exit(EXIT_SUCCESS);
 						}
-						if(state.argv[state.arg_num][j] != '-'){
-							ERROR(state.err_stream, "Unknow argument:\'-%c\'\nTry --help or --usage for mor information.\n",
+						ERROR(state.err_stream, "Unknow argument:\'-%c\'\nTry --help or --usage for mor information.\n",
 							state.argv[state.arg_num][j]);
-						}else{
-							parser->parse_opt(0, &state.argv[state.arg_num][2], &state);
-								/*fprintf(state.err_stream, "Invalid parameter.\nTry --help or --usage for mor information.\n");
-								exit(EXIT_FAILURE);*/
-						}
 					}
 				}
-			}else	if(state.arg_num > 0){
-					if(*state.argv[state.arg_num] == '\\'){
+			}else	if(*state.argv[state.arg_num] == '\\'){
 						parser->parse_opt(0, &state.argv[state.arg_num][1], &state);
-					}else
-						parser->parse_opt(0, state.argv[state.arg_num], &state);
-					end:;
-				}/*else{
-					if(state.argv[1] && strlen(state.argv[1]) < 2){
-						//parser->parse_opt(0, state.argv[state.arg_num +1], &state);
-						fprintf(state.err_stream, "Invalid parameter.\nTry --help or --usage for mor information.\n");
-						exit(EXIT_FAILURE);
+					}else{
+						/*if(state.arg_num > 0){
+							printf("***********%s\n",state.argv[state.arg_num]);*/
+							parser->parse_opt(0, state.argv[state.arg_num], &state);
+						/*}*/
 					}
-				}*/
+					end:;
 		}
 	}
 }
