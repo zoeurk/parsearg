@@ -351,10 +351,10 @@ main(int argc,char **argv)
  struct arguments args = { 0, INIT, { NULL, NULL}, NULL};
  struct comput calcule = {0,0,NULL,0,{{0,0}},{{NULL}},NULL,{0}};
  char
- 	*___fprintf___ = "%.6lf",
-	*___dprintf___ = "%.12f",
+ 	*___fprintf___ = "%.6f",
+	*___dprintf___ = "%.12lf",
 	*___ldprintf___= "%.18Lf",
-	*format[3] = {"lf","f","Lf"};
+	*format[3] = {"f","lf","Lf"};
  char *end[2], *format_tmp;
  size_t len,len_;
  int n,i,set;
