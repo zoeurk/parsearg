@@ -6,11 +6,11 @@ export LD_LIBRARY_PATH="/path/to/library:$LD_LIBRARY_PATH"
 avant d'utiliser la lib  
 l' original de l' exemple 2 et 3 est basex et sur math.c (https://github.com/zoeurk/basex et https://github.com/zoeurk/math)
 
-Pour installer la librairie:
-	libtoolize
-	aclocal
-	autoconf
-	autoreconf --install --force
-	./configure --prefix=/usr --exec-prefix=/usr
-	make
+Pour installer la librairie:  
+	libtoolize  
+	aclocal  
+	autoconf  
+	autoreconf --install --force  
+	./configure --prefix=/usr --exec-prefix=/usr  
+	make  
 	make install (en super utilisateur)
