@@ -25,9 +25,6 @@ struct arguments{
 	int i;
 	char buffer[1024];
 };
-void bye(void){
-	free(args.state);
-}
 int main(int argc, char **argv){
 	struct arguments _args_;
 	atexit(bye);
@@ -43,5 +40,6 @@ int main(int argc, char **argv){
 	args.state->arg_colonne = 35;
 	parser_parse(&args, argc, argv, &_args_);
 	parser_usage(&args);
+	free(args.state);
 	return 0;
 }
