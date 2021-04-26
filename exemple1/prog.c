@@ -53,7 +53,8 @@ int main(int argc, char **argv){
 	args.state->err_stream = stderr;
 	args.state->arg_colonne = 35;
 	parser_usage(&args);
-	//if(args.state)
-	//	free(args.state);
+	if(args.state)
+		free(args.state);
+	args.state = NULL;
 	return 0;
 }
