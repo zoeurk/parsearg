@@ -14,20 +14,34 @@ struct parser_option options[] =	{
 					{ "option-de-merde-alors-putain", 2, 0,NULL, "putain mais la c'est vraiment la merde"},
 					{0}
 				};
-void arguments(int key, char *arg, struct parser_state *state){
-	if(arg)
-		printf("[=>ok:%i:%c:arg:%s\n",key, key, arg);
-	else	printf("[+>ok:%i:%c:no arg\n",key, key);
-	/*return 0;*/
-}
-struct parser args = {options, arguments, "[OPTIONS]", "salut", "Exemple de programme", &program, NULL};
 struct arguments{
 	int i;
-	char buffer[1024];
+	int pad;
+	char *buffer;
 };
+void arguments(int key, char *arg, struct parser_state *state){
+	struct arguments *arguments = (struct arguments *)state->input;
+	if(arg){
+		arguments->buffer = arg;
+		printf("[=>ok:%i:%c:arg:%s\n",key, key, arg);
+	}else	printf("[+>ok:%i:%c:no arg\n",key, key);
+	/*return 0;*/
+}
+struct parser args = {options, arguments, "[OPTIONS]", "string", "Exemple de programme", &program, NULL};
+void bye(void){
+	if(args.state)
+		free(args.state);
+}
 int main(int argc, char **argv){
-	struct arguments _args_;
+	struct arguments _args_ = {0, 0, NULL};
 	atexit(bye);
+	parser_parse(&args, argc, argv, &_args_);
+	if(_args_.buffer == NULL){
+		fprintf(stderr, "%s take one arguments.",argv[0]);
+		fprintf(stderr, "Try %s -?|--usage\n",argv[0]);
+		exit(EXIT_FAILURE);
+	}
+	printf("arguments: %s\n", _args_.buffer);
 	if((args.state = calloc(1,sizeof(struct parser_state))) == NULL){
 		perror("calloc()");
 		exit(EXIT_FAILURE);
@@ -38,8 +52,8 @@ int main(int argc, char **argv){
 	args.state->out_stream = stdout;
 	args.state->err_stream = stderr;
 	args.state->arg_colonne = 35;
-	parser_parse(&args, argc, argv, &_args_);
 	parser_usage(&args);
-	free(args.state);
+	//if(args.state)
+	//	free(args.state);
 	return 0;
 }

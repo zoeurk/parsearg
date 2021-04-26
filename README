@@ -1,1 +1,1 @@
-export LD_LIBRARY_PATH=/path/to/libparsearg/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/home/thomas/Projets/parse_arg/:$LD_LIBRARY_PATH
