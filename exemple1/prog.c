@@ -28,20 +28,21 @@ void arguments(int key, char *arg, struct parser_state *state){
 	/*return 0;*/
 }
 struct parser args = {options, arguments, "[OPTIONS]", "string", "Exemple de programme", &program, NULL};
-void bye(void){
+/*void bye(void){
 	if(args.state)
 		free(args.state);
-}
+}*/
 int main(int argc, char **argv){
 	struct arguments _args_ = {0, 0, NULL};
-	atexit(bye);
+	/*atexit(bye);*/
 	parser_parse(&args, argc, argv, &_args_);
 	if(_args_.buffer == NULL){
 		fprintf(stderr, "%s take one arguments.",argv[0]);
 		fprintf(stderr, "Try %s -?|--usage\n",argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	printf("arguments: %s\n", _args_.buffer);
+	if(_args_.buffer)
+		printf("arguments: %s\n", _args_.buffer);
 	if((args.state = calloc(1,sizeof(struct parser_state))) == NULL){
 		perror("calloc()");
 		exit(EXIT_FAILURE);
@@ -55,6 +56,5 @@ int main(int argc, char **argv){
 	parser_usage(&args);
 	if(args.state)
 		free(args.state);
-	args.state = NULL;
 	return 0;
 }
