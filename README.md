@@ -7,8 +7,6 @@ avant d'utiliser la lib
 
 Pour installer la librairie:  
 	libtoolize  
-	aclocal  
-	autoconf  
 	autoreconf --install  
 	./configure --prefix=/usr --exec-prefix=/usr  
 	make  
