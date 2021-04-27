@@ -9,7 +9,7 @@ Pour installer la librairie:
 	libtoolize  
 	aclocal  
 	autoconf  
-	autoreconf --install --force  
+	autoreconf --install  
 	./configure --prefix=/usr --exec-prefix=/usr  
 	make  
 	make install (en super utilisateur)
