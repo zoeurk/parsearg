@@ -21,9 +21,11 @@ memcpy(&state, parser->state, sizeof(struct parser_state));\
 
 int printable(int i){
 	if(
-		(i >47 && i < 58) || 
+		/*(i >47 && i < 58) || 
 		(i > 64 && i < 91) ||
-		(i > 96 && i < 124)
+		(i > 96 && i < 124)*/
+		i > 32 && i < 127
+
 	)return 1;
 	return 0;
 }
