@@ -1,0 +1,1 @@
+export LD_LIBRARY_PATH="/path/to/parsearg/:$LD_LIBRARY_PATH"
