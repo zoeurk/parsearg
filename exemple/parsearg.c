@@ -194,39 +194,39 @@ void parser_short_usage(struct parser *parser){
 	}
 	for(i = 0, j = 0; options[i].longoption != 0; i++){
 		if(options[i].flags&OPTION_ARG_OPTIONAL){
-			upper(&k, 8+strlen(options[i].args), l);
+			upper(&k, 10+strlen(options[i].args), l);
 			if(printable(options[i].shortoption))
 				fprintf(state.out_stream,"[-%c [%s]] ",options[i].shortoption, options[i].args);
-			k += 8+strlen(options[i].args);
+			k += 10+strlen(options[i].args);
 		}
 	}
 	for(i = 0, j = 0; options[i].longoption != 0; i++){
 		if((options[i].flags&OPTION_ARG_OPTIONAL) == 0 && options[i].args && options[i].shortoption){
-			upper(&k, 6+strlen(options[i].args),l);
+			upper(&k, 7+strlen(options[i].args),l);
 			if(printable(options[i].shortoption))
 				fprintf(state.out_stream,"[-%c %s] ",options[i].shortoption, options[i].args);
-			k += 6+strlen(options[i].args);
+			k += 7+strlen(options[i].args);
 		}
 	}
 	for(i = 0;options[i].longoption != 0; i++){
 		if(options[i].args == NULL){
-			upper(&k, 5+strlen(options[i].longoption), l);
+			upper(&k, 6+strlen(options[i].longoption), l);
 			fprintf(state.out_stream,"[--%s] ", options[i].longoption);
 			k += 5+strlen(options[i].longoption);
 		}
 	}
 	for(i = 0, j = 0; options[i].longoption != 0; i++){
 		if(options[i].flags&OPTION_ARG_OPTIONAL){
-			upper(&k, 8+strlen(options[i].longoption) + strlen(options[i].args), l);
+			upper(&k, 10+strlen(options[i].longoption) + strlen(options[i].args), l);
 			fprintf(state.out_stream,"[--%s[=%s]] ",options[i].longoption, options[i].args);
-			k += 8+strlen(options[i].longoption) + strlen(options[i].args);
+			k += 10+strlen(options[i].longoption) + strlen(options[i].args);
 		}
 	}
 	for(i = 0, j = 0; options[i].longoption != 0; i++){
 		if((options[i].flags&OPTION_ARG_OPTIONAL) == 0 && options[i].args){
-			upper(&k, strlen(options[i].longoption) + strlen(options[i].args) +6, l);
+			upper(&k, strlen(options[i].longoption) + strlen(options[i].args) +7, l);
 			fprintf(state.out_stream,"[--%s=%s] ",options[i].longoption, options[i].args);
-			k += strlen(options[i].longoption) + strlen(options[i].args) +6;
+			k += strlen(options[i].longoption) + strlen(options[i].args) +7;
 		}
 	}
 	upper(&k, 9, l);
@@ -244,7 +244,7 @@ void parser_short_usage(struct parser *parser){
 		k += 10;
 	}
 	if(parser->args_doc)
-		fprintf(state.out_stream, "%s\n", parser->args_doc);
+		fprintf(state.out_stream, "\n\t%s\n", parser->args_doc);
 	else
 		fprintf(state.out_stream, "\n");
 }
