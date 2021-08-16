@@ -29,8 +29,14 @@ void arguments(int key, char *arg, struct parser_state *state){
 }
 struct parser args = {options, arguments, "[OPTIONS]", "string", "Exemple de programme", &program, NULL};
 int main(int argc, char **argv){
-	struct parser_state ps;
+	struct parser_state ps = {NULL, NULL, 0, 0, 0, 0, 0, 35, 75, 75, NULL, NULL, NULL, NULL};;
 	struct arguments _args_ = {0, 0, NULL};
+	args.state = &ps;
+	args.state->argv = argv;
+	args.state->argc = argc;
+	args.state->name = argv[0];
+	args.state->out_stream = stdout;
+	args.state->err_stream = stderr;
 	parser_parse(&args, argc, argv, &_args_);
 	if(_args_.buffer == NULL){
 		fprintf(stderr, "%s take one arguments.",argv[0]);
@@ -42,14 +48,8 @@ int main(int argc, char **argv){
 		perror("calloc()");
 		exit(EXIT_FAILURE);
 	}*/
-	memset(&ps,0, sizeof(struct parser_state));
-	args.state = &ps;
-	args.state->argv = argv;
-	args.state->argc = argc;
-	args.state->name = argv[0];
-	args.state->out_stream = stdout;
-	args.state->err_stream = stderr;
-	args.state->arg_colonne = 35;
-	parser_usage(&args);
+	//memset(&ps,0, sizeof(struct parser_state));
+	//args.state->arg_colonne = 75;
+	//parser_usage(&args);
 	return 0;
 }
