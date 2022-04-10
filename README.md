@@ -1,6 +1,6 @@
 #parsearg  
 Petite librairie pour anylser les arguments d'un programme (Pour les plateform non-glibc).  
-La librairie est libre d'utilisation, de modification et de distribution  
+La librairie est libre d'utilisation, de modification et de (re/)distribution  
 n'oubliez par de faire un:  
 
 Pour installer la librairie:  
