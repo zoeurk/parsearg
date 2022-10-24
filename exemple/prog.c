@@ -21,29 +21,43 @@ struct arguments{
 };
 void arguments(int key, char *arg, struct parser_state *state){
 	struct arguments *arguments = (struct arguments *)state->input;
-	if(arg){
+	arguments->buffer = arg;
+	switch(key){
+		case 't':
+			printf("ok:%s\n",arg);
+			break;
+		default:
+			printf("END:%s\n", arg);
+	}
+	/*if(arg){
 		arguments->buffer = arg;
 		printf("[=>ok:%i:%c:arg:%s\n",key, key, arg);
-	}else	printf("[+>ok:%i:%c:no arg\n",key, key);
+	}else{
+		arguments->buffer = NULL;
+		printf("[+>ok:%i:%c:no arg\n",key, key);
+	}*/
 	/*return 0;*/
 }
 struct parser args = {options, arguments, "[OPTIONS]", "string", "Exemple de programme", &program, NULL};
+/*void bye(void){
+	if(args.state)
+		free(args.state);
+}*/
 int main(int argc, char **argv){
-	struct parser_state ps;
 	struct arguments _args_ = {0, 0, NULL};
+	/*atexit(bye);*/
 	parser_parse(&args, argc, argv, &_args_);
-	if(_args_.buffer == NULL){
+	/*if(_args_.buffer == NULL){
 		fprintf(stderr, "%s take one arguments.",argv[0]);
 		fprintf(stderr, "Try %s -?|--usage\n",argv[0]);
 		exit(EXIT_FAILURE);
-	}
-	printf("arguments: %s\n", _args_.buffer);
-	/*if((args.state = calloc(1,sizeof(struct parser_state))) == NULL){
+	}*/
+	if(_args_.buffer)
+		printf("arguments: %s\n", _args_.buffer);
+	if((args.state = calloc(1,sizeof(struct parser_state))) == NULL){
 		perror("calloc()");
 		exit(EXIT_FAILURE);
-	}*/
-	memset(&ps,0, sizeof(struct parser_state));
-	args.state = &ps;
+	}
 	args.state->argv = argv;
 	args.state->argc = argc;
 	args.state->name = argv[0];
@@ -51,5 +65,7 @@ int main(int argc, char **argv){
 	args.state->err_stream = stderr;
 	args.state->arg_colonne = 35;
 	parser_usage(&args);
+	if(args.state)
+		free(args.state);
 	return 0;
 }
