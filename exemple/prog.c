@@ -52,8 +52,8 @@ int main(int argc, char **argv){
 		fprintf(stderr, "Try %s -?|--usage\n",argv[0]);
 		exit(EXIT_FAILURE);
 	}*/
-	if(_args_.buffer)
-		printf("arguments: %s\n", _args_.buffer);
+	/*if(_args_.buffer)
+		printf("arguments: %s\n", _args_.buffer);*/
 	if((args.state = calloc(1,sizeof(struct parser_state))) == NULL){
 		perror("calloc()");
 		exit(EXIT_FAILURE);
