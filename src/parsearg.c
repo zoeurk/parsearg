@@ -333,6 +333,15 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 									}else
 										parser->parse_opt(options[j].shortoption,NULL, &state);
 							}
+							if(state.arg_num == (unsigned long int)state.argc -1){
+								parser->parse_opt(0,NULL, &state);
+								return;
+							}
+								//printf("===================%i::%i\n", state.arg_num, state.argc);
+							/*if(state.arg_num == 1){
+								printf("==>%i\n", state.arg_num);
+								parser->parse_opt(options[j].shortoption,NULL, &state);
+							}*/
 						}else{
 							//printf("**********\n");
 							if(temporary){
@@ -350,7 +359,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 						}
 					}else{
 						parser->parse_opt(options[j].shortoption, NULL, &state);
-					//printf("=========+++++++++++=============\n");
+						//printf("=========+++++++++++=============\n");
 					}
 				}
 			}
@@ -435,5 +444,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 					end:;
 		}
 	}
+	//if(state.arg_num == (unsigned int)state.argc)
+		//parser->parse_opt(0, NULL, &state);
 }
 
