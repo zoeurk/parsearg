@@ -29,6 +29,7 @@ void arguments(int key, char *arg, struct parser_state *state){
 		case 'o': printf("out\n");
 			break;
 		case 'r':
+		case '2':
 			printf("retest\n");
 			break;
 		case 'L':
