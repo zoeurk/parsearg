@@ -26,6 +26,18 @@ void arguments(int key, char *arg, struct parser_state *state){
 		case 't':
 			printf("ok:%s\n",arg);
 			break;
+		case 'o': printf("out\n");
+			break;
+		case 'r':
+			printf("retest\n");
+			break;
+		case 'L':
+			printf("putaincesttroplong\n");
+			break;
+		case 1:printf("ok:%s\n", arg);
+			break;
+		case 2:printf("option-de-merde-alors-putain\n");
+			break;
 		default:
 			printf("END:%s\n", arg);
 	}
