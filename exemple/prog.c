@@ -23,7 +23,7 @@ void arguments(int key, char *arg, struct parser_state *state){
 		case 't':
 			printf("test:%s\n",arg);
 			break;
-		case 'o': printf("out\n");
+		case 'o': printf("out:%s\n", arg);
 			break;
 		case 'r':
 		case '2':
@@ -94,7 +94,7 @@ int main(int argc, char **argv){
 	args.state->err_stream = stderr;
 	args.state->arg_colonne = 35;
 	parser_usage(&args)*/
-	if(args.state)
+	//if(args.state)
 		free(args.state);
 	return 0;
 }
