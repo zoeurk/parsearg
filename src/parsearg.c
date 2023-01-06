@@ -271,12 +271,12 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 		state.parser = parser;
 		parser->state = &state;
 	}else{
-		/*state.argv = parser->state->argv;
-		state.argc = parser->state->argc;
-		state.name = parser->state->name;
-		state.input = parser->state->input;
-		state.err_stream = parser->state->err_stream;
-		state.out_stream = parser->state->out_stream;*/
+		/*state.argv = argv;
+		state.argc = argc;
+		state.name = argv[0];
+		state.input = input;
+		state.err_stream = stderr;
+		state.out_stream = stdout;*/
 		memcpy(&state, parser->state, sizeof(struct parser_state));
 		if(parser->state->err_stream == NULL)
 			parser->state->err_stream = stderr;
@@ -288,7 +288,9 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 			parser->state->argc = argc;
 		if(parser->state->name == NULL)
 			parser->state->name = argv[0];
+		state.input = input;
 		state.parser = parser;
+		//parser->state = &state;
 	}
 	/*memcpy(&p,parser, sizeof(struct parser));
 	p.state = &state;*/
@@ -436,9 +438,9 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 						parser->parse_opt(0, &state.argv[state.arg_num][1], &state);
 					}else{
 						//printf("HHHHHHHHH\n");
-						/*if(state.arg_num > 0){
-							printf("***********%s\n",state.argv[state.arg_num]);*/
-							parser->parse_opt(0, state.argv[state.arg_num], &state);
+						//if(state.arg_num > 0)
+						//	fprintf(stderr, "***********%s\n",state.argv[state.arg_num]);
+						parser->parse_opt(0, state.argv[state.arg_num], &state);
 						/*}*/
 					}
 					end:;
