@@ -37,7 +37,7 @@ void arguments(int key, char *arg, struct parser_state *state){
 		case 2:printf("option-de-merde-alors-putain:%s\n", arg);
 			break;
 		default:
-		printf("%s\n", arg);
+			printf("%s\n", arg);
 			if(arguments->buffer == NULL && arg != NULL){
 				if((arguments->buffer = calloc(strlen(arg)+1, sizeof(char))) == NULL){
 					perror("calloc()");
@@ -59,7 +59,6 @@ void arguments(int key, char *arg, struct parser_state *state){
 struct parser args = {options, arguments, "[OPTIONS]", "string", "Exemple de programme", &program, NULL};
 int main(int argc, char **argv){
 	struct arguments _args_ = {NULL};
-	/*atexit(bye);*/
 	if((args.state = calloc(1,sizeof(struct parser_state))) == NULL){
 		perror("calloc()");
 		exit(EXIT_FAILURE);
@@ -71,30 +70,12 @@ int main(int argc, char **argv){
 	args.state->err_stream = stderr;
 	args.state->arg_colonne = 45;
 	parser_parse(&args, argc, argv, &_args_);
-	//exit(0);
-	/*if(_args_.buffer == NULL){
-		fprintf(stderr, "%s take one arguments.",argv[0]);
-		fprintf(stderr, "Try %s -?|--usage\n",argv[0]);
-		exit(EXIT_FAILURE);
-	}*/
 	if(_args_.buffer != NULL){
 		printf("arguments: %s\n", _args_.buffer);
 		free(_args_.buffer);
-	}else{ fprintf(stderr, "Erreur: argument  manquant\n"),
-			exit(EXIT_FAILURE);
+	}else{ fprintf(stderr, "Erreur: argument  manquant\n");
 	}
-	/*if((args.state = calloc(1,sizeof(struct parser_state))) == NULL){
-		perror("calloc()");
-		exit(EXIT_FAILURE);
-	}
-	args.state->argv = argv;
-	args.state->argc = argc;
-	args.state->name = argv[0];
-	args.state->out_stream = stdout;
-	args.state->err_stream = stderr;
-	args.state->arg_colonne = 35;
-	parser_usage(&args)*/
-	//if(args.state)
+	if(args.state)
 		free(args.state);
 	return 0;
 }

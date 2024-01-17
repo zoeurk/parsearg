@@ -1,17 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #ifndef PARSEARG
 #define PARSEARG
-
-/*
-#define ERROR(stream, msg, arguments)\
-fprintf(stream, msg, arguments);\
-exit(EXIT_FAILURE);
-*/
-
-/*extern char *program_version;
-extern char *program_bug_address;*/
 
 enum FLAGS{
 	OPTION_ARG_OPTIONAL = 1,
@@ -62,6 +50,12 @@ struct parser{
 	struct parser_state *state;
 };
 /*struct parser args = { options, arguments, NULL, NULL};*/
+size_t _strlen(char *str);
+int _strcmp(char *src, char *dst);
+int _strncmp(char *src, char *dst, size_t len);
+char *_strchr(char *str, char c);
+void _memcpy(void *dst, void *src, size_t len);
+void _memset(void *dst, char c, size_t len);
 extern void parser_short_usage(struct parser *parser);
 extern void parser_usage(struct parser *parser);
 extern void parser_version(struct parser *parser);

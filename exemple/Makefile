@@ -1,5 +1,5 @@
 CC=gcc
-ARG=-g -Wall -Wpadded -Wextra
+ARG=-g -Wall -Wpadded -Wextra -pedantic -std=c90
 
 all:libparser.so
 	 $(CC) $(ARG) prog.c -o prog -L. -lparsearg 
