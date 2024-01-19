@@ -24,22 +24,12 @@ size_t _strlen(const char *str){
 }
 int _strcmp(const char *src, const char *dst){
 	for(;*src != 0 && *dst != 0 && *src == *dst; src++, dst++);
-	if(*src > *dst)
-		return 1;
-	else
-		if(*src < *dst)
-			return -1;
-	return 0;
+	return *src - *dst;
 }
 int _strncmp(const char *src, const char *dst, const size_t len){
 	size_t sz = 0;
 	for(;*src != 0 && *dst != 0 && *src == *dst && ++sz > 0 && sz < len; src++, dst++);
-	if(*src > *dst)
-		return 1;
-	else
-		if(*src < *dst)
-			return -1;
-	return 0;
+	return *src - *dst;
 }
 char *_strchr(char *str, const char c){
 	for(;*str != c && *str != 0; str++);
