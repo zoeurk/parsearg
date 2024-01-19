@@ -21,7 +21,10 @@ void arguments(int key, char *arg, struct parser_state *state){
 	struct arguments *arguments = (struct arguments *)state->input;
 	switch(key){
 		case 't':
-			printf("test:%s\n",arg);
+			if(arg)
+				printf("test:%s\n",arg);
+			else
+				printf("test: no args\n");
 			break;
 		case 'o': printf("out:%s\n", arg);
 			break;
@@ -37,7 +40,7 @@ void arguments(int key, char *arg, struct parser_state *state){
 		case 2:printf("option-de-merde-alors-putain:%s\n", arg);
 			break;
 		default:
-			printf("%s\n", arg);
+			/*printf("%s\n", arg);*/
 			if(arguments->buffer == NULL && arg != NULL){
 				if((arguments->buffer = calloc(strlen(arg)+1, sizeof(char))) == NULL){
 					perror("calloc()");

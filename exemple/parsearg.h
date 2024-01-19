@@ -50,12 +50,12 @@ struct parser{
 	struct parser_state *state;
 };
 /*struct parser args = { options, arguments, NULL, NULL};*/
-size_t _strlen(char *str);
-int _strcmp(char *src, char *dst);
-int _strncmp(char *src, char *dst, size_t len);
-char *_strchr(char *str, char c);
-void _memcpy(void *dst, void *src, size_t len);
-void _memset(void *dst, char c, size_t len);
+size_t _strlen(const char *str);
+int _strcmp(const char *src, const char *dst);
+int _strncmp(const char *src, const char *dst, const size_t len);
+char *_strchr(char *str, const char c);
+void _memcpy(void *dst, const void *src, const size_t len);
+void _memset(void *dst, const char c, const size_t len);
 extern void parser_short_usage(struct parser *parser);
 extern void parser_usage(struct parser *parser);
 extern void parser_version(struct parser *parser);

@@ -17,12 +17,12 @@ state.err_stream = stderr;\
 }else{\
 _memcpy(&state, parser->state, sizeof(struct parser_state));\
 }
-size_t _strlen(char *str){
+size_t _strlen(const char *str){
 	size_t sz = 0;
 	for(; *str != 0; str++, sz++);
 	return sz;
 }
-int _strcmp(char *src, char *dst){
+int _strcmp(const char *src, const char *dst){
 	for(;*src != 0 && *dst != 0 && *src == *dst; src++, dst++);
 	if(*src > *dst)
 		return 1;
@@ -31,7 +31,7 @@ int _strcmp(char *src, char *dst){
 			return -1;
 	return 0;
 }
-int _strncmp(char *src, char *dst, size_t len){
+int _strncmp(const char *src, const char *dst, const size_t len){
 	size_t sz = 0;
 	for(;*src != 0 && *dst != 0 && *src == *dst && ++sz > 0 && sz < len; src++, dst++);
 	if(*src > *dst)
@@ -41,19 +41,22 @@ int _strncmp(char *src, char *dst, size_t len){
 			return -1;
 	return 0;
 }
-char *_strchr(char *str, char c){
+char *_strchr(char *str, const char c){
 	for(;*str != c && *str != 0; str++);
-	return str;
+	if(*str)
+		return str;
+	return NULL;
 }
-void _memcpy(void *dst, void *src, size_t len){
-	char *_src = src, *_dst = dst;
-	size_t sz = 0;
-	for(;sz < len; *_dst = *_src, _src++, _dst++, sz++);
-}
-void _memset(void *dst, char c, size_t len){
+void _memcpy(void *dst, const void *src, const size_t len){
+	const char *_src = src;
 	char *_dst = dst;
-	size_t sz = 0;
-	for(;*_dst = c, sz < len; sz++, _dst++, sz++);
+	size_t sz = 0, ___len___ = len-1;
+	for(;*_dst = *_src ,sz < ___len___; _src++, _dst++, sz++);
+}
+void _memset(void *dst, const char c, const size_t len){
+	char *_dst = dst;
+	size_t sz = 0, ___len___ = len -1;
+	for(;*_dst = c, sz < ___len___; sz++, _dst++, sz++);
 }
 int printable(int i){
 	if(
@@ -351,7 +354,7 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 				{	if(options[j].args){
 						if((options[j].flags&OPTION_ARG_OPTIONAL) == OPTION_ARG_OPTIONAL){
 							if(temporary){
-								parser->parse_opt(options[j].shortoption,++temporary, &state);
+								parser->parse_opt(options[j].shortoption,temporary, &state);
 								temporary = NULL;
 							}else{
 								if(state.arg_num+1 < (unsigned int)state.argc -1 && *state.argv[state.arg_num+1] == '-'){
@@ -364,10 +367,11 @@ void parser_parse(struct parser *parser, int argc, char **argv, /*unsigned int f
 									}else
 										parser->parse_opt(options[j].shortoption,NULL, &state);
 							}
-							if(state.arg_num == (unsigned long int)state.argc -1){
-								parser->parse_opt(0,NULL, &state);
+							/*if(state.arg_num == (unsigned long int)state.argc -1){
+								printf("%i::%i\n", state.arg_num, state.argc);
+								parser->parse_opt(options[j].shortoption,NULL, &state);
 								return;
-							}
+							}*/
 						}else{
 							if(temporary){
 								parser->parse_opt(options[j].shortoption,++temporary, &state);
